@@ -298,6 +298,8 @@ function chooseWeapon(w){
 }
 
 function chooseCaliber(c){
+  document.getElementById("caliberField").value = c;
+
   document.getElementById("modeField").value =
     mode==="precision" ? "Precision 25 m – 5 skott" : "Snabbserie 25 m – 6 skott";
 
@@ -307,7 +309,6 @@ function chooseCaliber(c){
   updateDisplay();
 }
 
-/* X/10 FIX */
 document.addEventListener("DOMContentLoaded",()=>{
   loadLogbook();
 
@@ -354,7 +355,7 @@ function saveSeries(){
     date:document.getElementById("dateField").value,
     place:document.getElementById("placeField").value,
     weapon:document.getElementById("weaponField").value,
-    caliber:c,
+    caliber: document.getElementById("caliberField").value,
     type:document.getElementById("modeField").value,
     shots:[...currentShots],
     score:totalScore
@@ -372,6 +373,9 @@ function saveSeries(){
 
 function openLogbook(){
   renderLogbook();
+  showPage("
+function openLogbook(){
+  renderLogbook();
   showPage("pageLogbook");
 }
 
@@ -379,7 +383,8 @@ function renderLogbook(){
   let cont=document.getElementById("logContainer");
   cont.innerHTML="";
   if(logbook.length===0){
-    cont.innerHTML="<p>Inga serier sparade ännu.</p>"; return;
+    cont.innerHTML="<p>Inga serier sparade ännu.</p>"; 
+    return;
   }
   let sorted=[...logbook].sort((a,b)=>b.id-a.id);
   sorted.forEach(entry=>{
@@ -422,7 +427,8 @@ function renderLogbook(){
 function deleteEntry(id){
   if(!confirm("Vill du verkligen ta bort denna serie?"))return;
   logbook=logbook.filter(e=>e.id!==id);
-  saveLogbook(); renderLogbook();
+  saveLogbook(); 
+  renderLogbook();
 }
 
 function exportCSV() {
