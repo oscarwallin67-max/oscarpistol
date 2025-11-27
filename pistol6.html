@@ -298,8 +298,9 @@ function chooseWeapon(w){
 }
 
 function chooseCaliber(c){
-  document.getElementById("caliberField").value=c;
-  showPage("pageSeries");
+  document.getElementById("modeField").value =
+  mode==="precision" ? "Precision 25 m - 5 skott" : "Snabbserie 25 m - 6 skott";
+
 
   document.getElementById("modeField").value =
     mode==="precision" ? "Precision 25 m – 5 skott" : "Snabbserie 25 m – 6 skott";
@@ -451,4 +452,5 @@ function exportCSV(){
 
 </body>
 </html>
+
 
