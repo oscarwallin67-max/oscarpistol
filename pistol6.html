@@ -2,169 +2,83 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8" />
-<title>Pistolskytte App – pistol6 FIX</title>
+<title>PistolApp – Serie registrering</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    margin: 0;
-    background: #f0f2f5;
-    color: #111;
-  }
-  .page {
-    display: none;
-    padding: 20px 14px 28px;
-    max-width: 520px;
-    margin: 0 auto;
-  }
-  .show { display: block !important; }
+  body { font-family: system-ui, sans-serif; margin: 0; background:#f0f2f5; color:#111; }
+  .page { display:none; padding:20px; max-width:520px; margin:auto; }
+  .show { display:block !important; }
 
-  h1, h2 {
-    text-align: center;
-    margin: 6px 0 20px;
-  }
+  h1, h2 { text-align:center; margin:10px 0 20px; }
 
   .big-btn {
-    width: 100%;
-    padding: 26px;
-    font-size: 1.4rem;
-    color: #fff;
-    border-radius: 20px;
-    margin-bottom: 16px;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+    width:100%; padding:24px; font-size:1.4rem;
+    border:none; border-radius:18px; color:#fff;
+    cursor:pointer; margin-bottom:16px; font-weight:700;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
   }
-
-  .prec-btn { background: linear-gradient(135deg, #1565c0, #1e88e5); }
-  .snabb-btn { background: linear-gradient(135deg, #2e7d32, #43a047); }
-  .log-btn { background: linear-gradient(135deg, #5e35b1, #7e57c2); font-size:1.2rem; }
+  .prec-btn { background:linear-gradient(135deg, #1565c0, #1e88e5); }
+  .snabb-btn { background:linear-gradient(135deg, #2e7d32, #43a047); }
+  .log-btn { background:linear-gradient(135deg, #6a1b9a, #8e24aa); }
 
   .choice-btn {
-    width: 100%;
-    padding: 20px;
-    font-size: 1.3rem;
-    border-radius: 18px;
-    margin-bottom: 12px;
-    border: none;
-    background: #1976d2;
-    color: #fff;
-    cursor: pointer;
-    font-weight: 600;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+    width:100%; padding:20px; font-size:1.3rem;
+    background:#1976d2; color:white; border:none;
+    border-radius:16px; margin-bottom:12px; cursor:pointer;
   }
 
   .nav-back {
-    width: 100%;
-    margin-top: 10px;
-    padding: 14px;
-    font-size: 1rem;
-    border-radius: 999px;
-    border: none;
-    background: #e0e0e0;
-    color: #333;
-    cursor: pointer;
-    font-weight: 600;
+    width:100%; padding:14px; border:none;
+    background:#e0e0e0; border-radius:12px; cursor:pointer;
   }
 
-  label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-top: 12px;
-    display: block;
-  }
-
+  label { font-weight:600; margin-top:14px; display:block; }
   input, select {
-    width: 100%;
-    padding: 11px 12px;
-    font-size: 1rem;
-    margin-top: 4px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background: #fff;
-    box-sizing: border-box;
+    width:100%; padding:12px; margin-top:6px;
+    border-radius:10px; border:1px solid #ccc;
   }
 
   .shot-list {
-    margin: 12px 0 20px;
-    font-size: 1.7rem;
-    font-weight: 700;
-    text-align: center;
-    padding: 14px;
-    background: #ffffff;
-    border-radius: 14px;
-    min-height: 60px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    text-align:center; background:#fff; padding:16px;
+    font-size:1.6rem; border-radius:14px;
+    margin:12px 0; box-shadow:0 2px 6px rgba(0,0,0,0.12);
   }
 
   .series-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(90px, 1fr));
-    gap: 12px;
-    margin: 20px 0;
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:12px; margin:20px 0;
   }
 
   .series-btn {
-    padding: 22px 0;
-    font-size: 2rem;
-    font-weight: 800;
-    background: #0d47a1;
-    color: #fff;
-    border-radius: 18px;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding:22px 0; font-size:2rem; font-weight:700;
+    background:#0d47a1; color:#fff; border:none;
+    border-radius:16px; cursor:pointer;
+    box-shadow:0 4px 10px rgba(0,0,0,0.2);
   }
 
   .small-btn {
-    padding: 14px;
-    width: 50%;
-    font-size: 1.1rem;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.16);
+    width:50%; padding:14px; border:none; border-radius:12px;
+    font-size:1.1rem; font-weight:700; cursor:pointer;
   }
-
-  .undo-btn { background: #ffb300; color:#212121; }
-  .clear-btn { background: #c62828; color:#fff; }
+  .undo-btn { background:#ffb300; }
+  .clear-btn { background:#c62828; color:white; }
 
   .save-btn {
-    width: 100%;
-    padding: 18px;
-    margin-top: 20px;
-    background: #1976d2;
-    color: #fff;
-    font-size: 1.25rem;
-    border-radius: 18px;
-    border: none;
-    cursor: pointer;
-    font-weight: 700;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    width:100%; padding:18px; font-size:1.2rem;
+    background:#1976d2; color:white; border:none;
+    margin-top:20px; border-radius:16px; cursor:pointer;
   }
 
-  #logContainer { display:flex; flex-direction:column; gap:12px; margin-top:12px; }
-
+  /* LOGBOOK */
+  #logContainer { display:flex; flex-direction:column; gap:16px; }
   .log-card {
-    background:#fff; border-radius:14px; padding:12px 14px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.12); font-size:0.95rem;
+    background:white; padding:14px; border-radius:14px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
   }
-
-  .log-line-main { font-weight:700; margin-bottom:4px; }
-  .log-line-sub { font-size:0.85rem; color:#555; }
-  .log-shots { margin-top:6px; font-size:0.95rem; font-weight:600; }
-
-  .log-footer-row {
-    display:flex; justify-content:space-between; align-items:center;
-    margin-top:6px; font-size:0.85rem;
-  }
-
   .log-delete-btn {
-    border:none; background:#c62828; color:#fff; padding:6px 10px;
-    border-radius:999px; font-size:0.8rem; cursor:pointer; font-weight:600;
+    background:#c62828; border:none; color:white;
+    border-radius:999px; padding:6px 12px; cursor:pointer;
   }
 </style>
 </head>
@@ -174,8 +88,8 @@
 <!-- START -->
 <div id="pageStart" class="page show">
   <h1>Pistolskytte Logg</h1>
-  <button class="big-btn prec-btn" onclick="chooseMode('precision')">Precision 25 m – 5 skott</button>
-  <button class="big-btn snabb-btn" onclick="chooseMode('snabb')">Snabbserie 25 m – 6 skott</button>
+  <button class="big-btn prec-btn" onclick="chooseMode('precision')">Precision – 5 skott</button>
+  <button class="big-btn snabb-btn" onclick="chooseMode('snabb')">Snabbserie – 6 skott</button>
   <button class="big-btn log-btn" onclick="openLogbook()">📒 Loggbok</button>
 </div>
 
@@ -190,25 +104,22 @@
 <!-- KALIBER -->
 <div id="pageCaliber" class="page">
   <h2>Välj kaliber</h2>
-
   <button class="choice-btn" onclick="chooseCaliber('.22')">.22</button>
   <button class="choice-btn" onclick="chooseCaliber('.32')">.32</button>
   <button class="choice-btn" onclick="chooseCaliber('9mm')">9mm</button>
   <button class="choice-btn" onclick="chooseCaliber('.38 Special')">.38 Special</button>
   <button class="choice-btn" onclick="chooseCaliber('.357 Magnum')">.357 Magnum</button>
-
   <button class="nav-back" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
-
-<!-- SERIE -->
+<!-- SERIES -->
 <div id="pageSeries" class="page">
   <h2>Registrera serie</h2>
 
   <label>Datum</label>
   <input id="dateField" type="date">
 
-  <label>Skjutplats</label>
+  <label>Plats</label>
   <select id="placeField">
     <option value="Berget">Berget</option>
     <option value="Grimsta">Grimsta</option>
@@ -248,7 +159,7 @@
     <button class="series-btn">0</button>
   </div>
 
-  <div style="display:flex; gap:10px; margin-top:10px;">
+  <div style="display:flex; gap:10px;">
     <button class="small-btn undo-btn" onclick="undoShot()">⟲ Ångra</button>
     <button class="small-btn clear-btn" onclick="clearAllShots()">🗑 Rensa</button>
   </div>
@@ -257,7 +168,7 @@
   <button class="nav-back" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
-<!-- LOGGBOK -->
+<!-- LOGBOOK -->
 <div id="pageLogbook" class="page">
   <h2>Loggbok</h2>
   <div id="logContainer"></div>
@@ -266,99 +177,108 @@
 </div>
 
 <script>
-const STORAGE_KEY="pistolskytte_logg_v6";
-let logbook=[];
+const STORAGE_KEY = "pistolskytte_logg_v6";
+let logbook = [];
+let mode = "";
+let maxShots = 0;
+let currentShots = [];
+let totalScore = 0;
 
-function loadLogbook(){
-  let s=localStorage.getItem(STORAGE_KEY);
-  if(s){try{logbook=JSON.parse(s);}catch{logbook=[]}}
-}
-function saveLogbook(){
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(logbook));
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
-  document.getElementById(id).classList.add('show');
-}
-function goHome(){showPage("pageStart");}
-
-let mode="", maxShots=0, currentShots=[], totalScore=0;
-
-function chooseMode(m){
-  mode=m;
-  maxShots = (m==="precision"?5:6);
-  currentShots=[]; totalScore=0;
-  showPage("pageWeapon");
-}
-
-function chooseWeapon(w){
-  document.getElementById("weaponField").value=w;
-  showPage("pageCaliber");
-}
-
-function chooseCaliber(c){
-  document.getElementById("caliberField").value = c;
-
-  document.getElementById("modeField").value =
-    mode==="precision" ? "Precision 25 m – 5 skott" : "Snabbserie 25 m – 6 skott";
-
-  document.getElementById("dateField").valueAsDate=new Date();
-
-  currentShots=[]; totalScore=0;
-  updateDisplay();
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
   loadLogbook();
 
-  document.querySelectorAll(".series-btn").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      if(currentShots.length>=maxShots)return;
-      let label=btn.textContent.trim();
-      let scoreValue=(label==="X")?10:Number(label);
+  document.querySelectorAll(".series-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (currentShots.length >= maxShots) return;
+
+      let label = btn.textContent.trim();
+      let scoreValue = (label === "X") ? 10 : Number(label);
+
       currentShots.push(label);
-      totalScore+=scoreValue;
+      totalScore += scoreValue;
+
       updateDisplay();
     });
   });
 });
 
-function updateDisplay(){
-  document.getElementById("shotList").textContent=currentShots.join(" – ");
-  document.getElementById("shotsField").value=currentShots.length;
-  document.getElementById("scoreField").value=totalScore;
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
+  document.getElementById(id).classList.add("show");
 }
 
-function undoShot(){
-  if(currentShots.length===0)return;
-  let last=currentShots.pop();
-  let v=(last==="X")?10:Number(last);
-  totalScore-=v;
+function goHome() {
+  showPage("pageStart");
+}
+
+function chooseMode(m) {
+  mode = m;
+  maxShots = (m === "precision" ? 5 : 6);
+  currentShots = [];
+  totalScore = 0;
+  showPage("pageWeapon");
+}
+
+function chooseWeapon(w) {
+  document.getElementById("weaponField").value = w;
+  showPage("pageCaliber");
+}
+
+function chooseCaliber(c) {
+  document.getElementById("caliberField").value = c;
+
+  document.getElementById("modeField").value =
+    (mode === "precision"
+      ? "Precision 25 m – 5 skott"
+      : "Snabbserie 25 m – 6 skott");
+
+  document.getElementById("dateField").valueAsDate = new Date();
+
+  currentShots = [];
+  totalScore = 0;
+
+  updateDisplay();
+  showPage("pageSeries");
+}
+
+function updateDisplay() {
+  document.getElementById("shotList").textContent = currentShots.join(" – ");
+  document.getElementById("shotsField").value = currentShots.length;
+  document.getElementById("scoreField").value = totalScore;
+}
+
+function undoShot() {
+  if (currentShots.length === 0) return;
+
+  let last = currentShots.pop();
+  let val = (last === "X") ? 10 : Number(last);
+
+  totalScore -= val;
   updateDisplay();
 }
 
-function clearAllShots(){
-  currentShots=[];
-  totalScore=0;
+function clearAllShots() {
+  currentShots = [];
+  totalScore = 0;
   updateDisplay();
 }
 
-function saveSeries(){
-  if(currentShots.length!==maxShots){
-    alert("Du måste registrera exakt "+maxShots+" skott!");
+function saveSeries() {
+  if (currentShots.length !== maxShots) {
+    alert("Du måste registrera exakt " + maxShots + " skott!");
     return;
   }
 
-  let entry={
-    id:Date.now(),
-    date:document.getElementById("dateField").value,
-    place:document.getElementById("placeField").value,
-    weapon:document.getElementById("weaponField").value,
+  let entry = {
+    id: Date.now(),
+    date: document.getElementById("dateField").value,
+    place: document.getElementById("placeField").value,
+    weapon: document.getElementById("weaponField").value,
     caliber: document.getElementById("caliberField").value,
-    type:document.getElementById("modeField").value,
-    shots:[...currentShots],
-    score:totalScore
+    type: document.getElementById("modeField").value,
+    shots: [...currentShots],
+    score: totalScore
   };
 
   logbook.push(entry);
@@ -366,93 +286,88 @@ function saveSeries(){
 
   alert("Serie sparad!");
 
-  currentShots=[];
-  totalScore=0;
+  currentShots = [];
+  totalScore = 0;
   updateDisplay();
 }
 
-function openLogbook(){
-  renderLogbook();
-  showPage("
-function openLogbook(){
+function openLogbook() {
   renderLogbook();
   showPage("pageLogbook");
 }
 
-function renderLogbook(){
-  let cont=document.getElementById("logContainer");
-  cont.innerHTML="";
-  if(logbook.length===0){
-    cont.innerHTML="<p>Inga serier sparade ännu.</p>"; 
+function renderLogbook() {
+  let cont = document.getElementById("logContainer");
+  cont.innerHTML = "";
+
+  if (logbook.length === 0) {
+    cont.innerHTML = "<p>Inga serier sparade ännu.</p>";
     return;
   }
-  let sorted=[...logbook].sort((a,b)=>b.id-a.id);
-  sorted.forEach(entry=>{
-    let div=document.createElement("div");
-    div.className="log-card";
 
-    let main=document.createElement("div");
-    main.className="log-line-main";
-    main.textContent=`${entry.date} – ${entry.type}`;
-    div.appendChild(main);
+  let sorted = [...logbook].sort((a, b) => b.id - a.id);
 
-    let sub=document.createElement("div");
-    sub.className="log-line-sub";
-    sub.textContent=`Vapen: ${entry.weapon} | Kaliber: ${entry.caliber} | Plats: ${entry.place}`;
-    div.appendChild(sub);
+  sorted.forEach(entry => {
+    let div = document.createElement("div");
+    div.className = "log-card";
 
-    let shots=document.createElement("div");
-    shots.className="log-shots";
-    shots.textContent="Skott: "+entry.shots.join(" – ");
-    div.appendChild(shots);
+    div.innerHTML = `
+      <div><strong>${entry.date}</strong> – ${entry.type}</div>
+      <div>Vapen: ${entry.weapon} | Kaliber: ${entry.caliber} | Plats: ${entry.place}</div>
+      <div>Skott: ${entry.shots.join(" – ")}</div>
+      <div style="margin-top:6px; display:flex; justify-content:space-between;">
+        <span>Total: ${entry.score}p</span>
+        <button class="log-delete-btn" onclick="deleteEntry(${entry.id})">Ta bort</button>
+      </div>
+    `;
 
-    let foot=document.createElement("div");
-    foot.className="log-footer-row";
-
-    let sc=document.createElement("div");
-    sc.textContent=`Total: ${entry.score}p`;
-    foot.appendChild(sc);
-
-    let btn=document.createElement("button");
-    btn.className="log-delete-btn";
-    btn.textContent="Ta bort";
-    btn.onclick=()=>deleteEntry(entry.id);
-    foot.appendChild(btn);
-
-    div.appendChild(foot);
     cont.appendChild(div);
   });
 }
 
-function deleteEntry(id){
-  if(!confirm("Vill du verkligen ta bort denna serie?"))return;
-  logbook=logbook.filter(e=>e.id!==id);
-  saveLogbook(); 
+function deleteEntry(id) {
+  if (!confirm("Vill du ta bort serien?")) return;
+
+  logbook = logbook.filter(e => e.id !== id);
+  saveLogbook();
   renderLogbook();
 }
 
 function exportCSV() {
   if (logbook.length === 0) {
-    alert("Inga serier att exportera."); 
+    alert("Inga serier att exportera.");
     return;
   }
 
   let csv = "\uFEFFDatum;Typ;Vapen;Kaliber;Plats;Skott;Poäng\n";
 
   logbook.forEach(e => {
-    let s = e.shots.join("-");
-    let typeClean = e.type.replace("–", "-");
-    csv += `${e.date};${typeClean};${e.weapon};${e.caliber};${e.place};${s};${e.score}\n`;
+    csv += `${e.date};${e.type};${e.weapon};${e.caliber};${e.place};${e.shots.join("-")};${e.score}\n`;
   });
 
   let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   let url = URL.createObjectURL(blob);
+
   let a = document.createElement("a");
   a.href = url;
   a.download = "pistolskytte_loggbok.csv";
   a.click();
+
   URL.revokeObjectURL(url);
 }
+
+function loadLogbook() {
+  let s = localStorage.getItem(STORAGE_KEY);
+  if (s) {
+    try { logbook = JSON.parse(s); }
+    catch { logbook = []; }
+  }
+}
+
+function saveLogbook() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(logbook));
+}
+
 </script>
 
 </body>
