@@ -1,15 +1,20 @@
 {
   "name": "PistolApp",
   "short_name": "PistolApp",
+  "description": "Logga och registrera pistolskytte-serier snabbt och enkelt.",
   "start_url": "pistol6.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#000000",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
