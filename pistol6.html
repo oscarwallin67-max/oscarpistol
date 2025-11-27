@@ -430,7 +430,6 @@ function deleteEntry(id){
   logbook=logbook.filter(e=>e.id!==id);
   saveLogbook(); renderLogbook();
 }
-
 function exportCSV() {
   if (logbook.length === 0) {
     alert("Inga serier att exportera."); 
@@ -442,7 +441,7 @@ function exportCSV() {
 
   logbook.forEach(e => {
     let s = e.shots.join("-");
-    // Byter ut lång streck (–) mot vanligt minus (-)
+    // Byter ut långt streck (–) mot vanligt minus (-)
     let typeClean = e.type.replace("–", "-");
     csv += `${e.date};${typeClean};${e.weapon};${e.caliber};${e.place};${s};${e.score}\n`;
   });
@@ -454,3 +453,7 @@ function exportCSV() {
   a.download = "pistolskytte_loggbok.csv";
   a.click();
   URL.revokeObjectURL(url);
+}
+
+
+
