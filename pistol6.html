@@ -431,26 +431,26 @@ function deleteEntry(id){
   saveLogbook(); renderLogbook();
 }
 
-function exportCSV(){
-  if(logbook.length===0){
-    alert("Inga serier att exportera."); return;
+function exportCSV() {
+  if (logbook.length === 0) {
+    alert("Inga serier att exportera."); 
+    return;
   }
-  let csv="Datum;Typ;Vapen;Kaliber;Plats;Skott;Poäng\n";
-  logbook.forEach(e=>{
-    let s=e.shots.join("-");
-    csv+=`${e.date};${e.type};${e.weapon};${e.caliber};${e.place};${s};${e.score}\n`;
+
+  // UTF-8 BOM fix för Excel
+  let csv = "\uFEFFDatum;Typ;Vapen;Kaliber;Plats;Skott;Poäng\n";
+
+  logbook.forEach(e => {
+    let s = e.shots.join("-");
+    // Byter ut lång streck (–) mot vanligt minus (-)
+    let typeClean = e.type.replace("–", "-");
+    csv += `${e.date};${typeClean};${e.weapon};${e.caliber};${e.place};${s};${e.score}\n`;
   });
-  let blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  let url=URL.createObjectURL(blob);
-  let a=document.createElement("a");
-  a.href=url;
-  a.download="pistolskytte_loggbok.csv";
+
+  let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "pistolskytte_loggbok.csv";
   a.click();
   URL.revokeObjectURL(url);
-}
-</script>
-
-</body>
-</html>
-
-
