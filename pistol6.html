@@ -299,10 +299,6 @@ function chooseWeapon(w){
 
 function chooseCaliber(c){
   document.getElementById("modeField").value =
-  mode==="precision" ? "Precision 25 m - 5 skott" : "Snabbserie 25 m - 6 skott";
-
-
-  document.getElementById("modeField").value =
     mode==="precision" ? "Precision 25 m – 5 skott" : "Snabbserie 25 m – 6 skott";
 
   document.getElementById("dateField").valueAsDate=new Date();
@@ -347,7 +343,6 @@ function clearAllShots(){
   updateDisplay();
 }
 
-/* NYTT: Stanna kvar på samma sida efter sparad serie */
 function saveSeries(){
   if(currentShots.length!==maxShots){
     alert("Du måste registrera exakt "+maxShots+" skott!");
@@ -359,7 +354,7 @@ function saveSeries(){
     date:document.getElementById("dateField").value,
     place:document.getElementById("placeField").value,
     weapon:document.getElementById("weaponField").value,
-    caliber:document.getElementById("caliberField").value,
+    caliber:c,
     type:document.getElementById("modeField").value,
     shots:[...currentShots],
     score:totalScore
@@ -370,7 +365,6 @@ function saveSeries(){
 
   alert("Serie sparad!");
 
-  /* Viktigt: Visa nästa serie direkt */
   currentShots=[];
   totalScore=0;
   updateDisplay();
@@ -430,18 +424,17 @@ function deleteEntry(id){
   logbook=logbook.filter(e=>e.id!==id);
   saveLogbook(); renderLogbook();
 }
+
 function exportCSV() {
   if (logbook.length === 0) {
     alert("Inga serier att exportera."); 
     return;
   }
 
-  // UTF-8 BOM fix för Excel
   let csv = "\uFEFFDatum;Typ;Vapen;Kaliber;Plats;Skott;Poäng\n";
 
   logbook.forEach(e => {
     let s = e.shots.join("-");
-    // Byter ut långt streck (–) mot vanligt minus (-)
     let typeClean = e.type.replace("–", "-");
     csv += `${e.date};${typeClean};${e.weapon};${e.caliber};${e.place};${s};${e.score}\n`;
   });
@@ -454,6 +447,7 @@ function exportCSV() {
   a.click();
   URL.revokeObjectURL(url);
 }
+</script>
 
-
-
+</body>
+</html>
