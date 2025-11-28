@@ -203,38 +203,25 @@ let totalScore = 0;
 const KEY = "pistolapp_log_v1";
 
 
-/* --- NY korrekt snabbstart (index.html används alltid) --- */
+/* --- NY korrekt snabbstart utan URL-byten --- */
 function quickStart(weapon, caliber, type, place) {
-  const params = new URLSearchParams();
-  params.set("weapon", weapon);
-  params.set("caliber", caliber);
-  params.set("type", type); 
-  params.set("place", place);
-  params.set("quick", "1");
 
-  window.location.href = "?" + params.toString();
+  document.getElementById("weaponField").value = weapon;
+  document.getElementById("caliberField").value = caliber;
+  document.getElementById("typeField").value = type;
+  document.getElementById("placeField").value = place;
+  document.getElementById("dateField").valueAsDate = new Date();
+
+  currentShots = [];
+  totalScore = 0;
+  updateDisplay();
+
+  showPage("pageSeries");
 }
 
 
 /* --- När sidan laddas --- */
 document.addEventListener("DOMContentLoaded", () => {
-
-  const ps = new URLSearchParams(window.location.search);
-
-  if (ps.get("quick") === "1") {
-
-    document.getElementById("weaponField").value = ps.get("weapon");
-    document.getElementById("caliberField").value = ps.get("caliber");
-    document.getElementById("typeField").value = ps.get("type");
-    document.getElementById("placeField").value = ps.get("place");
-    document.getElementById("dateField").valueAsDate = new Date();
-
-    currentShots = [];
-    totalScore = 0;
-    updateDisplay();
-
-    showPage("pageSeries");
-  }
 
   let saved = localStorage.getItem(KEY);
   if (saved) log = JSON.parse(saved);
