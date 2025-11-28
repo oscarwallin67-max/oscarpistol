@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <title>PistolApp</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.png">
+<link rel="manifest" href="manifest.json?v=20251128_01">
+<link rel="apple-touch-icon" href="icon.png?v=20251128_01">
 
 <style>
   body {
@@ -45,6 +45,7 @@ function quickStart(weapon, caliber, modeText, shots, place) {
   params.set("type", modeText);
   params.set("shots", shots);
   params.set("place", place);
+  params.set("v", "20251128_01"); // 🔥 Tvingar ny version
   window.location.href = "pistol6.html?" + params.toString();
 }
 </script>
@@ -71,13 +72,13 @@ function quickStart(weapon, caliber, modeText, shots, place) {
   9mm B – Snabbserie
 </button>
 
-<button class="btn purple" onclick="window.location.href='pistol6.html?loggbok=1'">
+<button class="btn purple" onclick="window.location.href='pistol6.html?loggbok=1&v=20251128_01'">
   📒 Loggbok
 </button>
 
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
+  navigator.serviceWorker.register('service-worker.js?v=20251128_01');
 }
 </script>
 
