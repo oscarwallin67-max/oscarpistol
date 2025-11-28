@@ -54,11 +54,7 @@
     font-weight: 700;
   }
 
-  label {
-    font-weight: 600;
-    display: block;
-    margin-top: 14px;
-  }
+  label { font-weight: 600; display: block; margin-top: 14px; }
 
   input, select {
     width: 100%;
@@ -190,7 +186,6 @@
 </div>
 
 
-
 <!-- REGISTRERA SERIE -->
 <div id="pageSeries" class="page">
 
@@ -262,7 +257,6 @@
 </div>
 
 
-
 <!-- LOGGBOK -->
 <div id="pageLogbook" class="page">
   <h2>Loggbok</h2>
@@ -274,43 +268,38 @@
 </div>
 
 
-
 <script>
 let log = [];
 const KEY = "pistolapp_logg_v1";
 
-function goHome(){ showPage("pageStart"); }
+/* 🌟 NEW FIX — läs URL-params om snabbstart */
+document.addEventListener("DOMContentLoaded", () => {
+  const ps = new URLSearchParams(window.location.search);
 
-function showPage(id){
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
-  document.getElementById(id).classList.add("show");
-}
+  if (ps.get("quick") === "1") {
 
-/* SNABBSTART */
-function quickStart(cal, type, weapon, place){
-  document.getElementById("dateField").valueAsDate = new Date();
-  document.getElementById("placeField").value = place;
-  document.getElementById("weaponField").value = weapon;
-  document.getElementById("caliberField").value = cal;
-  document.getElementById("typeField").value = type;
+    document.getElementById("weaponField").value = ps.get("weapon");
+    document.getElementById("caliberField").value = ps.get("caliber");
+    document.getElementById("typeField").value = ps.get("type");
+    document.getElementById("placeField").value = ps.get("place");
+    document.getElementById("dateField").valueAsDate = new Date();
 
-  currentShots = [];
-  totalScore = 0;
-  updateDisplay();
+    currentShots = [];
+    totalScore = 0;
+    updateDisplay();
 
-  showPage("pageSeries");
-}
+    showPage("pageSeries");
+  }
 
-/* LADDA LOGG */
-document.addEventListener("DOMContentLoaded",()=>{
+  // Ladda logg
   let saved = localStorage.getItem(KEY);
-  if(saved){ log = JSON.parse(saved); }
+  if (saved) log = JSON.parse(saved);
 
-  document.querySelectorAll(".shot-btn").forEach(btn=>{
-    btn.onclick = ()=>{
-      if(currentShots.length >= getMaxShots()) return;
+  document.querySelectorAll(".shot-btn").forEach(btn => {
+    btn.onclick = () => {
+      if (currentShots.length >= getMaxShots()) return;
       let t = btn.textContent.trim();
-      let v = (t==="X") ? 10 : Number(t);
+      let v = (t === "X") ? 10 : Number(t);
       currentShots.push(t);
       totalScore += v;
       updateDisplay();
@@ -318,13 +307,34 @@ document.addEventListener("DOMContentLoaded",()=>{
   });
 });
 
+/* Navigering */
+function goHome(){ showPage("pageStart"); }
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
+  document.getElementById(id).classList.add("show");
+}
+
+/* 🔥 Ny quickStart – skickar över parametrar i URL */
+function quickStart(cal, type, weapon, place) {
+  const params = new URLSearchParams();
+  params.set("weapon", weapon);
+  params.set("caliber", cal);
+  params.set("type", type);
+  params.set("place", place);
+  params.set("quick", "1");
+
+  window.location.href = "pistol6.html?" + params.toString();
+}
+
+
+let currentShots = [];
+let totalScore = 0;
+
 function getMaxShots(){
   let type = document.getElementById("typeField").value;
   return type.includes("Precision") ? 5 : 6;
 }
-
-let currentShots=[];
-let totalScore=0;
 
 function updateDisplay(){
   document.getElementById("shotList").textContent = currentShots.join(" – ");
@@ -371,7 +381,6 @@ function saveSeries(){
   goHome();
 }
 
-/* LOGGBOK */
 function openLogbook(){
   showPage("pageLogbook");
   renderLog();
@@ -407,7 +416,6 @@ function deleteEntry(id){
   renderLog();
 }
 
-/* EXPORTERA CSV */
 function exportCSV(){
   if(log.length===0){
     alert("Inga serier att exportera.");
