@@ -1,14 +1,14 @@
-const CACHE_NAME = "pistolapp-v3";
+const CACHE_NAME = "pistolapp-v7";
 
 const urlsToCache = [
-  "/oscarpistol/",
-  "/oscarpistol/index.html",
-  "/oscarpistol/pistol6.html",
-  "/oscarpistol/manifest.json",
-  "/oscarpistol/icon.png"
+  "/oscarwallin67-max/oscarpistol/",
+  "/oscarwallin67-max/oscarpistol/index.html",
+  "/oscarwallin67-max/oscarpistol/pistol6.html",
+  "/oscarwallin67-max/oscarpistol/manifest.json",
+  "/oscarwallin67-max/oscarpistol/icon.png"
 ];
 
-// Installera service worker och cacha filer
+// Install
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
@@ -18,25 +18,21 @@ self.addEventListener("install", event => {
   self.skipWaiting();
 });
 
-// Aktivera och rensa gammal cache
+// Activate
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) return caches.delete(key);
-        })
+        keys.map(key => key !== CACHE_NAME ? caches.delete(key) : null)
       );
     })
   );
   self.clients.claim();
 });
 
-// Offline-stöd: cache först, nät sen
+// Fetch
 self.addEventListener("fetch", event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+    caches.match(event.request).then(resp => resp || fetch(event.request))
   );
 });
