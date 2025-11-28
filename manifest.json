@@ -1,11 +1,11 @@
 {
   "name": "PistolApp",
   "short_name": "PistolApp",
-  "start_url": "index.html",
+  "start_url": "/oscarwallin67-max/oscarpistol/pistol6.html",
+  "scope": "/oscarwallin67-max/oscarpistol/",
   "display": "standalone",
-  "background_color": "#f5f7fa",
-  "theme_color": "#1e88e5",
-  "description": "Registrera pistolskytte-serier, loggbok och snabbserier.",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "icon.png",
