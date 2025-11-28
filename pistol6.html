@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pistolskytte Logg</title>
 
+<!-- PWA offline -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1e88e5">
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
+</script>
+
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -19,61 +28,29 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* Blå knappar */
-.blue-btn {
-    width: 80%;
-    background: #1e88e5;
-    color: white;
-    padding: 18px;
-    margin: 12px auto;
-    border: none;
-    border-radius: 14px;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* Gröna knappar */
-.green-btn {
-    width: 80%;
-    background: #43a047;
-    color: white;
-    padding: 18px;
-    margin: 12px auto;
-    border: none;
-    border-radius: 14px;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* Loggbok */
-.logbook-btn {
-    width: 80%;
-    background: #512da8;
-    color: white;
-    padding: 18px;
-    margin: 18px auto;
-    border: none;
-    border-radius: 14px;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* Export huvudknapp */
+/* Huvudknappar (precision/snabbserie/logg/export) */
+.blue-btn,
+.green-btn,
+.logbook-btn,
 .export-main-btn {
-    width: 80%;
-    background: #4a148c;
-    color: white;
+    width: min(80%, 480px);
     padding: 18px;
-    margin: 18px auto 0 auto;
+    margin: 14px auto;
     border: none;
     border-radius: 14px;
     font-size: 22px;
     font-weight: bold;
+    color: white;
 }
 
-/* Export undermeny */
+.blue-btn { background: #1e88e5; }
+.green-btn { background: #43a047; }
+.logbook-btn { background: #512da8; }
+.export-main-btn { background: #4a148c; }
+
+/* Undermenyn */
 .export-sub-btn {
-    width: 70%;
+    width: min(70%, 400px);
     background: #6a1b9a;
     color: white;
     padding: 14px;
@@ -123,7 +100,7 @@ input[type=number] {
 <button class="green-btn" onclick="startSeries('.22 B – Snabbserie')">.22 B – Snabbserie</button>
 <button class="green-btn" onclick="startSeries('9mm B – Snabbserie')">9mm B – Snabbserie</button>
 
-<!-- borttagna: precision 25m 5 skott & snabbserie 25m 6 skott -->
+<!-- Borttagna 25 m-knapparna -->
 
 <button class="logbook-btn" onclick="window.location.href='loggbok.html'">📒 Loggbok</button>
 
@@ -136,7 +113,7 @@ input[type=number] {
 </div>
 
 
-<!-- RESULTATDEL -->
+<!-- REGISTRERING AV SERIE -->
 <div id="seriesDiv" style="display:none;">
     <h2 id="seriesTitle"></h2>
     <p>Ange dina 5 skott:</p>
@@ -152,6 +129,7 @@ input[type=number] {
     <button class="save-btn" onclick="saveSeries()">💾 Spara serie</button>
     <button class="back-btn" onclick="backToMenu()">⬅️ Tillbaka</button>
 </div>
+
 
 
 <script>
@@ -198,7 +176,7 @@ function backToMenu() {
     document.getElementById("seriesDiv").style.display = "none";
 }
 
-/* Toggle export-meny */
+/* Export meny */
 function toggleExportMenu() {
     let menu = document.getElementById("exportMenu");
     menu.style.display = (menu.style.display === "none") ? "block" : "none";
