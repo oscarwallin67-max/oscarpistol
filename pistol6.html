@@ -29,6 +29,7 @@ h1 { font-size: 32px; margin-bottom: 30px; }
     font-weight: bold;
     color: white;
 }
+
 .blue-btn { background:#1e88e5; }
 .green-btn { background:#43a047; }
 .logbook-btn { background:#512da8; }
@@ -40,9 +41,9 @@ h1 { font-size: 32px; margin-bottom: 30px; }
     color:white;
     padding:14px;
     margin:8px auto;
+    border:none;
     border-radius:12px;
     font-size:20px;
-    border:none;
 }
 
 input[type=number] {
@@ -58,6 +59,7 @@ input[type=number] {
     font-size:22px;
     border-radius:10px;
     border:none;
+    margin-top: 20px;
 }
 
 .back-btn {
@@ -94,6 +96,7 @@ input[type=number] {
 <div id="seriesDiv" style="display:none;">
     <h2 id="seriesTitle"></h2>
     <p>Ange dina 5 skott:</p>
+
     <div>
         <input type="number" id="s1" min="0" max="10">
         <input type="number" id="s2" min="0" max="10">
@@ -101,14 +104,14 @@ input[type=number] {
         <input type="number" id="s4" min="0" max="10">
         <input type="number" id="s5" min="0" max="10">
     </div>
+
     <button class="save-btn" onclick="saveSeries()">💾 Spara serie</button><br>
     <button class="back-btn" onclick="backToMenu()">⬅️ Tillbaka</button>
 </div>
 
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-
+// ALL FUNCTIONS IN GLOBAL SCOPE
 let selectedType = "";
 
 window.startSeries = function(type){
@@ -122,23 +125,23 @@ window.backToMenu = function(){
 };
 
 window.toggleExportMenu = function(){
-    const menu = document.getElementById("exportMenu");
+    let menu = document.getElementById("exportMenu");
     menu.style.display = (menu.style.display === "none") ? "block" : "none";
 };
 
 window.saveSeries = function(){
-    let s1 = document.getElementById("s1").value;
-    let s2 = document.getElementById("s2").value;
-    let s3 = document.getElementById("s3").value;
-    let s4 = document.getElementById("s4").value;
-    let s5 = document.getElementById("s5").value;
+    let s1 = +document.getElementById("s1").value;
+    let s2 = +document.getElementById("s2").value;
+    let s3 = +document.getElementById("s3").value;
+    let s4 = +document.getElementById("s4").value;
+    let s5 = +document.getElementById("s5").value;
 
     let lista = JSON.parse(localStorage.getItem("pistolLogg") || "[]");
 
     lista.push({
         typ: selectedType,
         skott: [s1, s2, s3, s4, s5],
-        total: Number(s1)+Number(s2)+Number(s3)+Number(s4)+Number(s5),
+        total: s1 + s2 + s3 + s4 + s5,
         tid: new Date().toLocaleString()
     });
 
@@ -170,12 +173,10 @@ window.exportPDF = function(){
     a.download = "pistol_logg.pdf";
     a.click();
 };
-
-});
 </script>
 
-<!-- PWA registrering ska ligga sist -->
 <script>
+// PWA registrering
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js');
 }
