@@ -1,331 +1,432 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<title>PistolApp – Serie registrering</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pistolskytte Logg</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI";
     margin: 0;
-    padding: 20px;
-    text-align: center;
-}
+    background: #f0f2f5;
+    color: #111;
+  }
 
-.page { display: none; max-width: 600px; margin: 0 auto; }
-.show { display: block !important; }
+  .page { display: none; padding: 20px; max-width: 520px; margin: auto; }
+  .show { display: block !important; }
 
-/* STARTMENY KNAPPAR */
-.big-btn {
+  h1, h2 { text-align: center; margin: 16px 0 20px; }
+
+  /* Snabbknappar */
+  .quick-btn {
     width: 100%;
     padding: 22px;
-    font-size: 22px;
-    margin-bottom: 15px;
-    border: none;
+    font-size: 1.3rem;
+    color: #fff;
     border-radius: 18px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.prec-btn { background: #1e88e5; }
-.snabb-btn { background: #43a047; }
-.log-btn { background: #512da8; }
-.export-btn { background: #4a148c; }
-
-/* EXPORT UNDERMENY */
-.export-sub-btn {
-    width: 100%;
-    padding: 18px;
-    background: #6a1b9a;
+    margin-bottom: 14px;
     border: none;
-    color: white;
-    font-size: 18px;
-    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e88e5, #26c6da);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+
+  .quick-btn.green {
+    background: linear-gradient(135deg, #43a047, #66bb6a);
+  }
+
+  .log-btn {
+    width: 100%;
+    padding: 22px;
+    margin-top: 10px;
     margin-bottom: 10px;
-}
+    background: linear-gradient(135deg, #7e57c2, #ab47bc);
+    color: #fff;
+    font-size: 1.3rem;
+    border-radius: 18px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
 
-/* INMATNING */
-.shot-display {
-    font-size: 26px;
-    font-weight: bold;
-    padding: 16px;
-    background: white;
+  label {
+    font-weight: 600;
+    display: block;
+    margin-top: 14px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 12px;
     border-radius: 12px;
-    margin-bottom: 20px;
-}
+    border: 1px solid #ccc;
+    margin-top: 4px;
+    font-size: 1rem;
+  }
 
-.grid {
+  .shot-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-}
+    gap: 14px;
+    margin-top: 20px;
+  }
 
-.num-btn {
-    padding: 22px 0;
-    font-size: 26px;
-    font-weight: bold;
+  .shot-btn {
+    padding: 20px 0;
     background: #0d47a1;
-    color: white;
+    color: #fff;
+    font-size: 1.6rem;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .small-row {
+    display: flex;
+    gap: 10px;
+    margin: 18px 0;
+  }
+
+  .small-btn {
+    flex: 1;
+    padding: 16px;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .undo-btn { background: #ffb300; color: #212121; }
+  .clear-btn { background: #c62828; color: #fff; }
+
+  .save-btn {
+    width: 100%;
+    padding: 20px;
+    margin-top: 10px;
+    background: #1976d2;
+    color: #fff;
+    font-size: 1.3rem;
     border-radius: 16px;
     border: none;
     cursor: pointer;
-}
+    font-weight: 700;
+  }
 
-/* SMÅ KNAPPAR */
-.small-btn {
+  .nav-back {
+    width: 100%;
+    margin-top: 14px;
     padding: 16px;
-    font-size: 16px;
+    font-size: 1rem;
     border-radius: 12px;
     border: none;
-    color: white;
-    margin: 10px;
-    width: 45%;
+    background: #ddd;
+    color: #333;
     cursor: pointer;
-}
+    font-weight: 600;
+  }
 
-.undo { background: #ffb300; color: black; }
-.clear { background: #c62828; }
-.save { background: #1b5e20; width: 100%; }
-.back { background: #b71c1c; width: 100%; margin-top: 10px; }
-
-/* LOGGBOK */
-.log-card {
-    background: white;
-    padding: 12px;
-    border-radius: 12px;
+  /* Loggbok */
+  .log-card {
+    background: #fff;
+    padding: 12px 14px;
+    border-radius: 14px;
     margin-bottom: 12px;
-    text-align: left;
-}
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
 
-.log-del {
+  .log-top { font-weight: 700; margin-bottom: 4px; }
+  .log-sub { color: #555; font-size: 0.9rem; }
+  .log-shots { margin-top: 6px; font-weight: 600; }
+
+  .log-delete {
+    margin-top: 6px;
     background: #c62828;
+    color: #fff;
     border: none;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    float: right;
-}
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
 </style>
 </head>
 
 <body>
 
-<!-- STARTSIDAN -->
-<div id="start" class="page show">
-<h1>Pistolskytte Logg</h1>
+<!-- STARTSIDA -->
+<div id="pageStart" class="page show">
+  <h1>Pistolskytte Logg</h1>
 
-<button class="big-btn prec-btn" onclick="startSeries('.22 – Precision',5)">.22 – Precision</button>
-<button class="big-btn prec-btn" onclick="startSeries('9mm – Precision',5)">9mm – Precision</button>
+  <!-- Snabbknappar PRECISION -->
+  <button class="quick-btn"
+    onclick="quickStart('.22','Precision 25 m – 5 skott','Pistol','Berget')">
+    .22 B – Precision
+  </button>
 
-<button class="big-btn snabb-btn" onclick="startSeries('.22 – Snabbserie',6)">.22 – Snabbserie</button>
-<button class="big-btn snabb-btn" onclick="startSeries('9mm – Snabbserie',6)">9mm – Snabbserie</button>
+  <button class="quick-btn"
+    onclick="quickStart('9mm','Precision 25 m – 5 skott','Pistol','Berget')">
+    9mm B – Precision
+  </button>
 
-<button class="big-btn log-btn" onclick="openLogbook()">📒 Loggbok</button>
-<button class="big-btn export-btn" onclick="toggleExport()">📤 Exportera</button>
+  <!-- Snabbknappar SNABBSERIE -->
+  <button class="quick-btn green"
+    onclick="quickStart('.22','Snabbserie 25 m – 6 skott','Pistol','Berget')">
+    .22 B – Snabbserie
+  </button>
 
-<div id="exportMenu" style="display:none;">
-    <button class="export-sub-btn" onclick="exportCSV()">📄 Exportera som CSV</button>
-</div>
-</div>
+  <button class="quick-btn green"
+    onclick="quickStart('9mm','Snabbserie 25 m – 6 skott','Pistol','Berget')">
+    9mm B – Snabbserie
+  </button>
 
-<!-- INMATNINGSSIDAN -->
-<div id="series" class="page">
-<h2 id="seriesTitle"></h2>
-
-<div class="shot-display" id="shotList">-</div>
-
-<div class="grid">
-    <button class="num-btn">X</button>
-    <button class="num-btn">10</button>
-    <button class="num-btn">9</button>
-    <button class="num-btn">8</button>
-    <button class="num-btn">7</button>
-    <button class="num-btn">6</button>
-    <button class="num-btn">5</button>
-    <button class="num-btn">4</button>
-    <button class="num-btn">3</button>
-    <button class="num-btn">2</button>
-    <button class="num-btn">1</button>
-    <button class="num-btn">0</button>
+  <button class="log-btn" onclick="openLogbook()">📒 Loggbok</button>
 </div>
 
-<!-- PLATSVAL -->
-<div style="margin-top:20px;">
-    <label style="font-size:18px;font-weight:bold;">Plats:</label>
-    <select id="plats" onchange="checkCustomPlats()" 
-            style="padding:10px;font-size:18px;border-radius:8px;margin-left:10px;">
-        <option value="Berget">Berget</option>
-        <option value="Grimsta">Grimsta</option>
-        <option value="Lövsta">Lövsta</option>
-        <option value="Annan">Annan…</option>
-    </select>
+
+
+<!-- REGISTRERA SERIE -->
+<div id="pageSeries" class="page">
+
+  <h2>Registrera serie</h2>
+
+  <label>Datum</label>
+  <input type="date" id="dateField">
+
+  <label>Plats</label>
+  <select id="placeField">
+    <option value="Berget">Berget</option>
+    <option value="Grimsta">Grimsta</option>
+    <option value="Annat">Annat</option>
+  </select>
+
+  <label>Vapen</label>
+  <select id="weaponField">
+    <option value="Pistol">Pistol</option>
+    <option value="Revolver">Revolver</option>
+  </select>
+
+  <label>Kaliber</label>
+  <select id="caliberField">
+    <option value=".22">.22</option>
+    <option value=".32">.32</option>
+    <option value="9mm">9mm</option>
+    <option value=".38 Special">.38 Special</option>
+    <option value=".357 Magnum">.357 Magnum</option>
+  </select>
+
+  <label>Typ</label>
+  <select id="typeField">
+    <option value="Precision 25 m – 5 skott">Precision 25 m – 5 skott</option>
+    <option value="Snabbserie 25 m – 6 skott">Snabbserie 25 m – 6 skott</option>
+  </select>
+
+  <label>Skott</label>
+  <div id="shotList"></div>
+
+  <label>Poäng</label>
+  <input id="scoreField" type="number" readonly>
+
+  <label>Antal skott</label>
+  <input id="shotsField" type="number" readonly>
+
+  <div class="shot-grid">
+    <button class="shot-btn">X</button>
+    <button class="shot-btn">10</button>
+    <button class="shot-btn">9</button>
+    <button class="shot-btn">8</button>
+    <button class="shot-btn">7</button>
+    <button class="shot-btn">6</button>
+    <button class="shot-btn">5</button>
+    <button class="shot-btn">4</button>
+    <button class="shot-btn">3</button>
+    <button class="shot-btn">2</button>
+    <button class="shot-btn">1</button>
+    <button class="shot-btn">0</button>
+  </div>
+
+  <div class="small-row">
+    <button class="small-btn undo-btn" onclick="undoShot()">⟲ Ångra</button>
+    <button class="small-btn clear-btn" onclick="clearShots()">🗑 Rensa</button>
+  </div>
+
+  <button class="save-btn" onclick="saveSeries()">Spara serie</button>
+
+  <button class="nav-back" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
-<div id="customPlatsDiv" style="display:none; margin-top:10px;">
-    <input id="customPlats" type="text" placeholder="Skriv plats..." 
-           style="padding:10px;font-size:18px;width:70%;border-radius:8px;">
-</div>
 
-<!-- MILJÖ -->
-<div style="margin-top:20px;">
-    <label style="font-size:18px;font-weight:bold;">Miljö:</label>
-    <select id="miljo" style="padding:10px;font-size:18px;border-radius:8px;margin-left:10px;">
-        <option value="Utomhus">Utomhus</option>
-        <option value="Inomhus">Inomhus</option>
-    </select>
-</div>
-
-<button class="small-btn undo" onclick="undo()">⟲ Ångra</button>
-<button class="small-btn clear" onclick="clearAll()">🗑 Rensa</button>
-<button class="small-btn save" onclick="saveSeries()">💾 Spara serie</button>
-<button class="small-btn back" onclick="goHome()">⬅ Tillbaka</button>
-</div>
 
 <!-- LOGGBOK -->
-<div id="log" class="page">
-<h2>Loggbok</h2>
-<div id="logList"></div>
-<button class="small-btn back" onclick="goHome()">⬅ Tillbaka</button>
+<div id="pageLogbook" class="page">
+  <h2>Loggbok</h2>
+  <div id="logContainer"></div>
+
+  <button class="save-btn" onclick="exportCSV()">📤 Exportera till Excel</button>
+
+  <button class="nav-back" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
+
+
 <script>
-let shots = [];
-let maxShots = 5;
-let currentType = "";
-let logData = JSON.parse(localStorage.getItem("logData") || "[]");
+let log = [];
+const KEY = "pistolapp_logg_v1";
+
+function goHome(){ showPage("pageStart"); }
 
 function showPage(id){
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
-    document.getElementById(id).classList.add("show");
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
+  document.getElementById(id).classList.add("show");
 }
 
-function startSeries(type, count){
-    shots = [];
-    maxShots = count;
-    currentType = type;
-    document.getElementById("seriesTitle").innerText = type;
-    document.getElementById("shotList").innerText = "-";
-    showPage("series");
+/* SNABBSTART */
+function quickStart(cal, type, weapon, place){
+  document.getElementById("dateField").valueAsDate = new Date();
+  document.getElementById("placeField").value = place;
+  document.getElementById("weaponField").value = weapon;
+  document.getElementById("caliberField").value = cal;
+  document.getElementById("typeField").value = type;
+
+  currentShots = [];
+  totalScore = 0;
+  updateDisplay();
+
+  showPage("pageSeries");
 }
 
-document.querySelectorAll(".num-btn").forEach(btn => {
-    btn.onclick = () => {
-        if(shots.length >= maxShots) return;
-        shots.push(btn.innerText);
-        updateShots();
+/* LADDA LOGG */
+document.addEventListener("DOMContentLoaded",()=>{
+  let saved = localStorage.getItem(KEY);
+  if(saved){ log = JSON.parse(saved); }
+
+  document.querySelectorAll(".shot-btn").forEach(btn=>{
+    btn.onclick = ()=>{
+      if(currentShots.length >= getMaxShots()) return;
+      let t = btn.textContent.trim();
+      let v = (t==="X") ? 10 : Number(t);
+      currentShots.push(t);
+      totalScore += v;
+      updateDisplay();
     };
+  });
 });
 
-function updateShots(){
-    document.getElementById("shotList").innerText = shots.join(" – ");
+function getMaxShots(){
+  let type = document.getElementById("typeField").value;
+  return type.includes("Precision") ? 5 : 6;
 }
 
-function undo(){
-    shots.pop();
-    updateShots();
+let currentShots=[];
+let totalScore=0;
+
+function updateDisplay(){
+  document.getElementById("shotList").textContent = currentShots.join(" – ");
+  document.getElementById("shotsField").value = currentShots.length;
+  document.getElementById("scoreField").value = totalScore;
 }
 
-function clearAll(){
-    shots = [];
-    updateShots();
+function undoShot(){
+  if(currentShots.length===0) return;
+  let last = currentShots.pop();
+  let v = last==="X" ? 10 : Number(last);
+  totalScore -= v;
+  updateDisplay();
 }
 
-function checkCustomPlats() {
-    let plats = document.getElementById("plats").value;
-    document.getElementById("customPlatsDiv").style.display = 
-        (plats === "Annan") ? "block" : "none";
+function clearShots(){
+  currentShots=[];
+  totalScore=0;
+  updateDisplay();
 }
 
 function saveSeries(){
-    if(shots.length !== maxShots){
-        alert("Du måste fylla i " + maxShots + " skott!");
-        return;
-    }
+  if(currentShots.length !== getMaxShots()){
+    alert("Du måste registrera exakt "+getMaxShots()+" skott!");
+    return;
+  }
 
-    let plats = document.getElementById("plats").value;
-    if (plats === "Annan") {
-        plats = document.getElementById("customPlats").value || "Odefinierad plats";
-    }
+  let entry = {
+    id: Date.now(),
+    date: document.getElementById("dateField").value,
+    place: document.getElementById("placeField").value,
+    weapon: document.getElementById("weaponField").value,
+    caliber: document.getElementById("caliberField").value,
+    type: document.getElementById("typeField").value,
+    shots: [...currentShots],
+    score: totalScore
+  };
 
-    logData.push({
-        id: Date.now(),
-        date: new Date().toLocaleDateString(),
-        type: currentType,
-        plats: plats,
-        miljo: document.getElementById("miljo").value,
-        shots: [...shots],
-        score: shots.reduce((a,b)=>a + (b==="X"?10:parseInt(b)), 0)
-    });
+  log.push(entry);
+  localStorage.setItem(KEY, JSON.stringify(log));
 
-    localStorage.setItem("logData", JSON.stringify(logData));
-    goHome();
+  alert("Serie sparad!");
+  clearShots();
+  goHome();
 }
 
+/* LOGGBOK */
 function openLogbook(){
-    let c = document.getElementById("logList");
-    c.innerHTML = "";
-
-    logData.forEach(e => {
-        let div = document.createElement("div");
-        div.className = "log-card";
-        div.innerHTML = `
-            <b>${e.date}</b><br>
-            Kaliber: <b>${e.type.split(" – ")[0]}</b><br>
-            Gren: <b>${e.type.split(" – ")[1]}</b><br>
-            Plats: <b>${e.plats}</b><br>
-            Miljö: <b>${e.miljo}</b><br>
-            Skott: ${e.shots.join(" – ")}<br>
-            Poäng: <b>${e.score}</b>
-            <button class="log-del" onclick="del(${e.id})">Ta bort</button>
-        `;
-        c.appendChild(div);
-    });
-
-    showPage("log");
+  showPage("pageLogbook");
+  renderLog();
 }
 
-function del(id){
-    logData = logData.filter(e => e.id !== id);
-    localStorage.setItem("logData", JSON.stringify(logData));
-    openLogbook();
+function renderLog(){
+  let box = document.getElementById("logContainer");
+  box.innerHTML = "";
+
+  if(log.length===0){
+    box.innerHTML="<p>Inga serier sparade ännu.</p>";
+    return;
+  }
+
+  [...log].reverse().forEach(e=>{
+    let div = document.createElement("div");
+    div.className="log-card";
+
+    div.innerHTML = `
+      <div class="log-top">${e.date} – ${e.type}</div>
+      <div class="log-sub">Vapen: ${e.weapon} | Kaliber: ${e.caliber} | Plats: ${e.place}</div>
+      <div class="log-shots">Skott: ${e.shots.join(" – ")}</div>
+      <button class="log-delete" onclick="deleteEntry(${e.id})">Ta bort</button>
+    `;
+    box.appendChild(div);
+  });
 }
 
-function goHome(){
-    showPage("start");
+function deleteEntry(id){
+  if(!confirm("Vill du ta bort serien?")) return;
+  log = log.filter(e => e.id !== id);
+  localStorage.setItem(KEY, JSON.stringify(log));
+  renderLog();
 }
 
-function toggleExport(){
-    let m = document.getElementById("exportMenu");
-    m.style.display = (m.style.display === "none" ? "block" : "none");
-}
+/* EXPORTERA CSV */
+function exportCSV(){
+  if(log.length===0){
+    alert("Inga serier att exportera.");
+    return;
+  }
 
-function exportCSV() {
-    if (logData.length === 0) {
-        alert("Loggboken är tom!");
-        return;
-    }
+  let csv = "\uFEFFDatum;Typ;Vapen;Kaliber;Plats;Skott;Poäng\n";
 
-    let csv = "Datum;Kaliber;Gren;Plats;Miljö;Skott;Poäng\n";
+  log.forEach(e=>{
+    csv += `${e.date};${e.type};${e.weapon};${e.caliber};${e.place};${e.shots.join("-")};${e.score}\n`;
+  });
 
-    logData.forEach(e => {
-        let kaliber = e.type.split(" – ")[0];
-        let gren = e.type.split(" – ")[1];
-
-        csv += `${e.date};${kaliber};${gren};${e.plats};${e.miljo};"${e.shots.join(" ")}";${e.score}\n`;
-    });
-
-    let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    let url = URL.createObjectURL(blob);
-
-    let a = document.createElement("a");
-    a.href = url;
-    a.download = "pistol_loggbok.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+  let blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "pistolskytte_loggbok.csv";
+  a.click();
+  URL.revokeObjectURL(url);
 }
 </script>
 
