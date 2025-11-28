@@ -5,15 +5,80 @@
 <title>PistolApp</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="manifest" href="manifest.json">
-</head>
+<link rel="apple-touch-icon" href="icon.png">
 
-<body style="margin:0; padding:0; background:black;">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    font-family: system-ui, sans-serif;
+    text-align: center;
+  }
+  h1 {
+    margin-top: 32px;
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  .btn {
+    display: block;
+    width: 80%;
+    margin: 16px auto;
+    padding: 22px;
+    border-radius: 20px;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+  }
+  .blue { background: linear-gradient(135deg, #0d47a1, #1e88e5); }
+  .green { background: linear-gradient(135deg, #2e7d32, #66bb6a); }
+  .purple { background: linear-gradient(135deg, #5e35b1, #9575cd); }
+</style>
 
 <script>
-  // FIX: vänta kort tid innan redirect för att fungera på GitHub Pages
-  setTimeout(() => {
-    window.location.href = "pistol6.html";
-  }, 50);
+function quickStart(weapon, caliber, modeText, shots, place) {
+  let params = new URLSearchParams();
+  params.set("weapon", weapon);
+  params.set("caliber", caliber);
+  params.set("type", modeText);
+  params.set("shots", shots);
+  params.set("place", place);
+  window.location.href = "pistol6.html?" + params.toString();
+}
+</script>
+
+</head>
+
+<body>
+
+<h1>Pistolskytte Logg</h1>
+
+<button class="btn blue" onclick="quickStart('Pistol','.22','Precision 25 m – 5 skott','5','Berget')">
+  .22 B – Precision
+</button>
+
+<button class="btn blue" onclick="quickStart('Pistol','9mm','Precision 25 m – 5 skott','5','Berget')">
+  9mm B – Precision
+</button>
+
+<button class="btn green" onclick="quickStart('Pistol','.22','Snabbserie 25 m – 6 skott','6','Berget')">
+  .22 B – Snabbserie
+</button>
+
+<button class="btn green" onclick="quickStart('Pistol','9mm','Snabbserie 25 m – 6 skott','6','Berget')">
+  9mm B – Snabbserie
+</button>
+
+<button class="btn purple" onclick="window.location.href='pistol6.html?loggbok=1'">
+  📒 Loggbok
+</button>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
+}
 </script>
 
 </body>
