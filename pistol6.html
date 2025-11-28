@@ -5,14 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pistolskytte Logg</title>
 
-<!-- PWA offline -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1e88e5">
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js');
-}
-</script>
 
 <style>
 body {
@@ -23,16 +17,9 @@ body {
     padding: 20px;
 }
 
-h1 {
-    font-size: 32px;
-    margin-bottom: 30px;
-}
+h1 { font-size: 32px; margin-bottom: 30px; }
 
-/* Huvudknappar (precision/snabbserie/logg/export) */
-.blue-btn,
-.green-btn,
-.logbook-btn,
-.export-main-btn {
+.blue-btn, .green-btn, .logbook-btn, .export-main-btn {
     width: min(80%, 480px);
     padding: 18px;
     margin: 14px auto;
@@ -42,23 +29,20 @@ h1 {
     font-weight: bold;
     color: white;
 }
+.blue-btn { background:#1e88e5; }
+.green-btn { background:#43a047; }
+.logbook-btn { background:#512da8; }
+.export-main-btn { background:#4a148c; }
 
-.blue-btn { background: #1e88e5; }
-.green-btn { background: #43a047; }
-.logbook-btn { background: #512da8; }
-.export-main-btn { background: #4a148c; }
-
-/* Undermenyn */
 .export-sub-btn {
     width: min(70%, 400px);
-    background: #6a1b9a;
-    color: white;
-    padding: 14px;
-    margin: 8px auto;
-    border: none;
-    border-radius: 12px;
-    font-size: 20px;
-    display: block;
+    background:#6a1b9a;
+    color:white;
+    padding:14px;
+    margin:8px auto;
+    border-radius:12px;
+    font-size:20px;
+    border:none;
 }
 
 input[type=number] {
@@ -68,23 +52,22 @@ input[type=number] {
 }
 
 .save-btn {
-    background: #1b5e20;
-    color: white;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 22px;
-    border: none;
-    margin-top: 20px;
+    background:#1b5e20;
+    color:white;
+    padding:14px;
+    font-size:22px;
+    border-radius:10px;
+    border:none;
 }
 
 .back-btn {
-    background: #b71c1c;
-    color: white;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 22px;
-    border: none;
-    margin-top: 20px;
+    background:#b71c1c;
+    color:white;
+    padding:14px;
+    font-size:22px;
+    border-radius:10px;
+    border:none;
+    margin-top:20px;
 }
 </style>
 </head>
@@ -93,18 +76,14 @@ input[type=number] {
 
 <h1>Pistolskytte Logg</h1>
 
-<!-- KNAPPAR -->
 <button class="blue-btn" onclick="startSeries('.22 B – Precision')">.22 B – Precision</button>
 <button class="blue-btn" onclick="startSeries('9mm B – Precision')">9mm B – Precision</button>
 
 <button class="green-btn" onclick="startSeries('.22 B – Snabbserie')">.22 B – Snabbserie</button>
 <button class="green-btn" onclick="startSeries('9mm B – Snabbserie')">9mm B – Snabbserie</button>
 
-<!-- Borttagna 25 m-knapparna -->
+<button class="logbook-btn" onclick="location.href='loggbok.html'">📒 Loggbok</button>
 
-<button class="logbook-btn" onclick="window.location.href='loggbok.html'">📒 Loggbok</button>
-
-<!-- Export -->
 <button class="export-main-btn" onclick="toggleExportMenu()">📤 Exportera</button>
 
 <div id="exportMenu" style="display:none;">
@@ -112,12 +91,9 @@ input[type=number] {
     <button class="export-sub-btn" onclick="exportPDF()">📄 Exportera PDF</button>
 </div>
 
-
-<!-- REGISTRERING AV SERIE -->
 <div id="seriesDiv" style="display:none;">
     <h2 id="seriesTitle"></h2>
     <p>Ange dina 5 skott:</p>
-
     <div>
         <input type="number" id="s1" min="0" max="10">
         <input type="number" id="s2" min="0" max="10">
@@ -125,25 +101,32 @@ input[type=number] {
         <input type="number" id="s4" min="0" max="10">
         <input type="number" id="s5" min="0" max="10">
     </div>
-
-    <button class="save-btn" onclick="saveSeries()">💾 Spara serie</button>
+    <button class="save-btn" onclick="saveSeries()">💾 Spara serie</button><br>
     <button class="back-btn" onclick="backToMenu()">⬅️ Tillbaka</button>
 </div>
 
 
-
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
 let selectedType = "";
 
-/* Starta serie */
-function startSeries(type) {
+window.startSeries = function(type){
     selectedType = type;
     document.getElementById("seriesTitle").innerText = type;
     document.getElementById("seriesDiv").style.display = "block";
-}
+};
 
-/* Spara serie */
-function saveSeries() {
+window.backToMenu = function(){
+    document.getElementById("seriesDiv").style.display = "none";
+};
+
+window.toggleExportMenu = function(){
+    const menu = document.getElementById("exportMenu");
+    menu.style.display = (menu.style.display === "none") ? "block" : "none";
+};
+
+window.saveSeries = function(){
     let s1 = document.getElementById("s1").value;
     let s2 = document.getElementById("s2").value;
     let s3 = document.getElementById("s3").value;
@@ -163,45 +146,38 @@ function saveSeries() {
 
     alert("Serie sparad!");
 
-    // Rensa siffror men stanna kvar
     document.getElementById("s1").value = "";
     document.getElementById("s2").value = "";
     document.getElementById("s3").value = "";
     document.getElementById("s4").value = "";
     document.getElementById("s5").value = "";
-}
+};
 
-/* Tillbaka */
-function backToMenu() {
-    document.getElementById("seriesDiv").style.display = "none";
-}
-
-/* Export meny */
-function toggleExportMenu() {
-    let menu = document.getElementById("exportMenu");
-    menu.style.display = (menu.style.display === "none") ? "block" : "none";
-}
-
-/* Excel-export */
-function exportExcel() {
+window.exportExcel = function(){
     let data = localStorage.getItem("pistolLogg") || "[]";
     let blob = new Blob([data], { type: "application/vnd.ms-excel" });
-
     let a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "pistol_logg.xls";
     a.click();
-}
+};
 
-/* PDF-export */
-function exportPDF() {
+window.exportPDF = function(){
     let data = localStorage.getItem("pistolLogg") || "[]";
     let blob = new Blob([data], { type: "application/pdf" });
-
     let a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "pistol_logg.pdf";
     a.click();
+};
+
+});
+</script>
+
+<!-- PWA registrering ska ligga sist -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 
