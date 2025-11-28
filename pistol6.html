@@ -164,6 +164,8 @@
 <div id="pageLogbook" class="page">
   <h2>Loggbok</h2>
   <div id="logContainer"></div>
+  <button class="save-btn" onclick="exportCSV()">📤 Exportera Excel (CSV)</button>
+  <button class="save-btn" onclick="exportPDF()">📄 Exportera PDF</button>
   <button class="back-btn" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
@@ -293,7 +295,54 @@ function renderLogbook(){
     c.appendChild(d);
   });
 }
+  function exportCSV() {
+  if (logbook.length === 0) {
+    alert("Inga serier att exportera.");
+    return;
+  }
+
+  let csv = "\uFEFFDatum;Typ;Vapen;Kaliber;Plats;Skott;Poäng\n";
+
+  logbook.forEach(e => {
+    let s = e.shots.join("-");
+    csv += `${e.date};${e.type};${e.weapon};${e.caliber};${e.place};${s};${e.score}\n`;
+  });
+
+  let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  let url = URL.createObjectURL(blob);
+
+  let a = document.createElement("a");
+  a.href = url;
+  a.download = "pistolskytte_loggbok.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+  function exportPDF() {
+  if (logbook.length === 0) {
+    alert("Inga serier att exportera.");
+    return;
+  }
+
+  let win = window.open("", "_blank");
+  win.document.write("<h1>Pistolskytte Loggbok</h1>");
+
+  logbook.forEach(e => {
+    win.document.write(`<p>
+      <strong>${e.date}</strong><br>
+      Typ: ${e.type}<br>
+      Vapen: ${e.weapon}<br>
+      Kaliber: ${e.caliber}<br>
+      Plats: ${e.place}<br>
+      Skott: ${e.shots.join(" – ")}<br>
+      Poäng: ${e.score}
+    </p><hr>`);
+  });
+
+  win.print();
+}
 </script>
 
 </body>
 </html>
+
