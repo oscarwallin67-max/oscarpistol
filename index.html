@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#1a73e8">
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
 
 <meta charset="UTF-8" />
 <title>PistolApp – Serie registrering</title>
