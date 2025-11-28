@@ -95,22 +95,22 @@
   <h1>Pistolskytte Logg</h1>
 
   <button class="quick-btn"
-    onclick="quickStart('.22','Precision 25 m – 5 skott','Pistol','Berget')">
+    onclick="quickStart('Pistol','.22','Precision 25 m – 5 skott','Berget')">
     .22 B – Precision
   </button>
 
   <button class="quick-btn"
-    onclick="quickStart('9mm','Precision 25 m – 5 skott','Pistol','Berget')">
+    onclick="quickStart('Pistol','9mm','Precision 25 m – 5 skott','Berget')">
     9mm B – Precision
   </button>
 
   <button class="quick-btn green"
-    onclick="quickStart('.22','Snabbserie 25 m – 6 skott','Pistol','Berget')">
+    onclick="quickStart('Pistol','.22','Snabbserie 25 m – 6 skott','Berget')">
     .22 B – Snabbserie
   </button>
 
   <button class="quick-btn green"
-    onclick="quickStart('9mm','Snabbserie 25 m – 6 skott','Pistol','Berget')">
+    onclick="quickStart('Pistol','9mm','Snabbserie 25 m – 6 skott','Berget')">
     9mm B – Snabbserie
   </button>
 
@@ -198,17 +198,31 @@
 
 <script>
 let log = [];
-const KEY = "pistolapp_log_v1";
 let currentShots = [];
 let totalScore = 0;
+const KEY = "pistolapp_log_v1";
 
 
-/* ⭐ IMPORTANT: FIX for iPhone/Android PWA caching */
+/* --- NY korrekt snabbstart --- */
+function quickStart(weapon, caliber, type, place) {
+  const params = new URLSearchParams();
+  params.set("weapon", weapon);
+  params.set("caliber", caliber);
+  params.set("type", type);
+  params.set("place", place);
+  params.set("quick", "1");
+
+  window.location.href = "pistol6.html?" + params.toString();
+}
+
+
+/* --- När sidan laddas --- */
 document.addEventListener("DOMContentLoaded", () => {
 
   const ps = new URLSearchParams(window.location.search);
 
   if (ps.get("quick") === "1") {
+
     document.getElementById("weaponField").value = ps.get("weapon");
     document.getElementById("caliberField").value = ps.get("caliber");
     document.getElementById("typeField").value = ps.get("type");
@@ -218,6 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentShots = [];
     totalScore = 0;
     updateDisplay();
+
     showPage("pageSeries");
   }
 
@@ -237,18 +252,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-/* ➤ FIXED quickStart: works on iPhone/Android */
-function quickStart(cal, type, weapon, place) {
-  const params = new URLSearchParams();
-  params.set("weapon", weapon);
-  params.set("caliber", cal);
-  params.set("type", type);
-  params.set("place", place);
-  params.set("quick", "1");
-
-  window.location.assign("pistol6.html?" + params.toString());
-}
-
 function showPage(id){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));
   document.getElementById(id).classList.add("show");
@@ -257,7 +260,8 @@ function showPage(id){
 function goHome(){ showPage("pageStart"); }
 
 function getMaxShots(){
-  return document.getElementById("typeField").value.includes("Precision") ? 5 : 6;
+  let t = document.getElementById("typeField").value;
+  return t.includes("Precision") ? 5 : 6;
 }
 
 function updateDisplay(){
@@ -267,19 +271,20 @@ function updateDisplay(){
 }
 
 function undoShot(){
-  if (currentShots.length===0) return;
-  let last=currentShots.pop();
+  if(currentShots.length === 0) return;
+  let last = currentShots.pop();
   totalScore -= (last==="X") ? 10 : Number(last);
   updateDisplay();
 }
 
 function clearShots(){
-  currentShots=[]; totalScore=0; updateDisplay();
+  currentShots = [];
+  totalScore = 0;
+  updateDisplay();
 }
 
-
 function saveSeries(){
-  if (currentShots.length !== getMaxShots()){
+  if(currentShots.length !== getMaxShots()){
     alert("Du måste registrera exakt "+getMaxShots()+" skott!");
     return;
   }
@@ -303,8 +308,10 @@ function saveSeries(){
   goHome();
 }
 
-
-function openLogbook(){ showPage("pageLogbook"); renderLog(); }
+function openLogbook(){
+  showPage("pageLogbook");
+  renderLog();
+}
 
 function renderLog(){
   let box=document.getElementById("logContainer");
@@ -329,12 +336,11 @@ function renderLog(){
 }
 
 function deleteEntry(id){
-  if (!confirm("Vill du ta bort serien?")) return;
-  log = log.filter(e => e.id !== id);
+  if(!confirm("Vill du ta bort serien?")) return;
+  log = log.filter(x => x.id !== id);
   localStorage.setItem(KEY, JSON.stringify(log));
   renderLog();
 }
-
 
 function exportCSV(){
   if(log.length===0){ alert("Inga serier att exportera."); return; }
@@ -351,6 +357,7 @@ function exportCSV(){
   a.href=url; a.download="pistolskytte_loggbok.csv"; a.click();
   URL.revokeObjectURL(url);
 }
+
 </script>
 
 </body>
