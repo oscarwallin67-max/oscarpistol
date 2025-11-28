@@ -1,15 +1,14 @@
-// Version
-const CACHE_NAME = "pistolapp-v2";
+const CACHE_NAME = "pistolapp-v3";
 
-// Filer att cacha
 const urlsToCache = [
   "/oscarpistol/",
+  "/oscarpistol/index.html",
   "/oscarpistol/pistol6.html",
-  "/oscarpistol/manifest.webmanifest",
+  "/oscarpistol/manifest.json",
   "/oscarpistol/icon.png"
 ];
 
-// Installera service worker
+// Installera service worker och cacha filer
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
@@ -19,7 +18,7 @@ self.addEventListener("install", event => {
   self.skipWaiting();
 });
 
-// Aktivera (rensa gammal cache)
+// Aktivera och rensa gammal cache
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -33,7 +32,7 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// Ladda från cache först (offline-stöd)
+// Offline-stöd: cache först, nät sen
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => {
