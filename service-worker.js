@@ -1,11 +1,11 @@
-const CACHE_NAME = "pistolapp-v7";
+const CACHE_NAME = "pistolapp-v8";
 
 const urlsToCache = [
-  "/oscarwallin67-max/oscarpistol/",
-  "/oscarwallin67-max/oscarpistol/index.html",
-  "/oscarwallin67-max/oscarpistol/pistol6.html",
-  "/oscarwallin67-max/oscarpistol/manifest.json",
-  "/oscarwallin67-max/oscarpistol/icon.png"
+  "/oscarpistol/",
+  "/oscarpistol/index.html",
+  "/oscarpistol/pistol6.html",
+  "/oscarpistol/manifest.json",
+  "/oscarpistol/icon.png"
 ];
 
 // Install
