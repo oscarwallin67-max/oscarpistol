@@ -1,24 +1,16 @@
-const cacheName = 'pistolcache-v1';
+const cacheName = 'pistolcache-v10';
 const filesToCache = [
   'pistol6.html',
   'manifest.json',
   'icon.png'
 ];
 
-// Install – cache allt
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(cacheName).then((cache) => {
-      return cache.addAll(filesToCache);
-    })
-  );
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(cacheName).then(cache => cache.addAll(filesToCache)));
 });
 
-// Fetch – offline fallback
-self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(resp => resp || fetch(e.request))
   );
 });
