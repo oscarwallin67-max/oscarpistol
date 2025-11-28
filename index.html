@@ -4,8 +4,9 @@
 <meta charset="UTF-8" />
 <title>PistolApp</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json?v=20251128_01">
-<link rel="apple-touch-icon" href="icon.png?v=20251128_01">
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
 
 <style>
   body {
@@ -38,14 +39,14 @@
 </style>
 
 <script>
-function quickStart(weapon, caliber, modeText, shots, place) {
+function quickStart(weapon, caliber, type, place) {
   let params = new URLSearchParams();
   params.set("weapon", weapon);
   params.set("caliber", caliber);
-  params.set("type", modeText);
-  params.set("shots", shots);
+  params.set("type", type);
   params.set("place", place);
-  params.set("v", "20251128_01"); // 🔥 Tvingar ny version
+  params.set("quick", "1");
+
   window.location.href = "pistol6.html?" + params.toString();
 }
 </script>
@@ -56,29 +57,35 @@ function quickStart(weapon, caliber, modeText, shots, place) {
 
 <h1>Pistolskytte Logg</h1>
 
-<button class="btn blue" onclick="quickStart('Pistol','.22','Precision 25 m – 5 skott','5','Berget')">
+<!-- ⭐ KORREKT PARAMETRAR NU ⭐ -->
+
+<button class="btn blue"
+  onclick="quickStart('Pistol','.22','Precision 25 m – 5 skott','Berget')">
   .22 B – Precision
 </button>
 
-<button class="btn blue" onclick="quickStart('Pistol','9mm','Precision 25 m – 5 skott','5','Berget')">
+<button class="btn blue"
+  onclick="quickStart('Pistol','9mm','Precision 25 m – 5 skott','Berget')">
   9mm B – Precision
 </button>
 
-<button class="btn green" onclick="quickStart('Pistol','.22','Snabbserie 25 m – 6 skott','6','Berget')">
+<button class="btn green"
+  onclick="quickStart('Pistol','.22','Snabbserie 25 m – 6 skott','Berget')">
   .22 B – Snabbserie
 </button>
 
-<button class="btn green" onclick="quickStart('Pistol','9mm','Snabbserie 25 m – 6 skott','6','Berget')">
+<button class="btn green"
+  onclick="quickStart('Pistol','9mm','Snabbserie 25 m – 6 skott','Berget')">
   9mm B – Snabbserie
 </button>
 
-<button class="btn purple" onclick="window.location.href='pistol6.html?loggbok=1&v=20251128_01'">
+<button class="btn purple" onclick="window.location.href='pistol6.html?loggbok=1'">
   📒 Loggbok
 </button>
 
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js?v=20251128_01');
+  navigator.serviceWorker.register('service-worker.js');
 }
 </script>
 
