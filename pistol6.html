@@ -14,12 +14,14 @@ body {
     text-align: center;
 }
 
-.page { display: none; max-width: 500px; margin: 0 auto; }
+/* SIDOR */
+.page { display: none; max-width: 600px; margin: 0 auto; }
 .show { display: block !important; }
 
+/* RUBRIKER */
 h1, h2 { margin-bottom: 20px; }
 
-/* STARTSKÄRM */
+/* STARTMENY-KNAPPAR */
 .big-btn {
     width: 100%;
     padding: 22px;
@@ -32,13 +34,12 @@ h1, h2 { margin-bottom: 20px; }
     cursor: pointer;
 }
 
-/* Färger */
 .prec-btn { background: #1e88e5; }
 .snabb-btn { background: #43a047; }
 .log-btn { background: #512da8; }
 .export-btn { background: #4a148c; }
 
-/* EXPORT undermeny */
+/* EXPORT UNDERMENY */
 .export-sub-btn {
     width: 100%;
     padding: 18px;
@@ -54,7 +55,7 @@ h1, h2 { margin-bottom: 20px; }
 .shot-display {
     font-size: 26px;
     font-weight: bold;
-    padding: 12px;
+    padding: 16px;
     background: white;
     border-radius: 12px;
     margin-bottom: 20px;
@@ -77,6 +78,7 @@ h1, h2 { margin-bottom: 20px; }
     cursor: pointer;
 }
 
+/* SMÅ KNAPPAR */
 .small-btn {
     padding: 16px;
     font-size: 16px;
@@ -101,6 +103,7 @@ h1, h2 { margin-bottom: 20px; }
     margin-bottom: 12px;
     text-align: left;
 }
+
 .log-del {
     background: #c62828;
     border: none;
@@ -114,7 +117,7 @@ h1, h2 { margin-bottom: 20px; }
 
 <body>
 
-<!-- ================= STARTSKÄRM ================= -->
+<!-- STARTSKÄRM -->
 <div id="start" class="page show">
 <h1>Pistolskytte Logg</h1>
 
@@ -125,7 +128,6 @@ h1, h2 { margin-bottom: 20px; }
 <button class="big-btn snabb-btn" onclick="startSeries('9mm B – Snabbserie',6)">9mm B – Snabbserie</button>
 
 <button class="big-btn log-btn" onclick="openLogbook()">📒 Loggbok</button>
-
 <button class="big-btn export-btn" onclick="toggleExport()">📤 Exportera</button>
 
 <div id="exportMenu" style="display:none;">
@@ -135,11 +137,11 @@ h1, h2 { margin-bottom: 20px; }
 </div>
 </div>
 
-<!-- ================= INMATNING ================= -->
+<!-- INMATNINGSSIDAN -->
 <div id="series" class="page">
 <h2 id="seriesTitle"></h2>
 
-<div class="shot-display" id="shotList"></div>
+<div class="shot-display" id="shotList">-</div>
 
 <div class="grid">
     <button class="num-btn">X</button>
@@ -158,12 +160,12 @@ h1, h2 { margin-bottom: 20px; }
 
 <button class="small-btn undo" onclick="undo()">⟲ Ångra</button>
 <button class="small-btn clear" onclick="clearAll()">🗑 Rensa</button>
-
 <button class="small-btn save" onclick="saveSeries()">💾 Spara serie</button>
+
 <button class="small-btn back" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
-<!-- ================= LOGGBOK ================= -->
+<!-- LOGGBOK -->
 <div id="log" class="page">
 <h2>Loggbok</h2>
 <div id="logList"></div>
@@ -176,7 +178,7 @@ let maxShots = 5;
 let currentType = "";
 let logData = JSON.parse(localStorage.getItem("logData") || "[]");
 
-function showPage(id) {
+function showPage(id){
     document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
     document.getElementById(id).classList.add("show");
 }
@@ -186,15 +188,14 @@ function startSeries(type, count){
     maxShots = count;
     currentType = type;
     document.getElementById("seriesTitle").innerText = type;
-    document.getElementById("shotList").innerText = "";
+    document.getElementById("shotList").innerText = "-";
     showPage("series");
 }
 
 document.querySelectorAll(".num-btn").forEach(btn => {
     btn.onclick = () => {
-        if (shots.length >= maxShots) return;
-        let val = btn.innerText === "X" ? "X" : btn.innerText;
-        shots.push(val);
+        if(shots.length >= maxShots) return;
+        shots.push(btn.innerText);
         updateShots();
     };
 });
@@ -214,12 +215,12 @@ function clearAll(){
 }
 
 function saveSeries(){
-    if (shots.length !== maxShots) {
+    if(shots.length !== maxShots){
         alert("Du måste fylla i " + maxShots + " skott!");
         return;
     }
 
-    let score = shots.reduce((a,b)=>a + (b==="X"?10:parseInt(b)),0);
+    let score = shots.reduce((a,b) => a + (b==="X"?10:parseInt(b)), 0);
 
     logData.push({
         id: Date.now(),
@@ -230,7 +231,6 @@ function saveSeries(){
     });
 
     localStorage.setItem("logData", JSON.stringify(logData));
-    alert("Serie sparad!");
     goHome();
 }
 
@@ -238,16 +238,16 @@ function openLogbook(){
     let c = document.getElementById("logList");
     c.innerHTML = "";
 
-    logData.forEach(entry => {
-        let div = document.createElement("div");
-        div.className = "log-card";
-        div.innerHTML = `
-            <b>${entry.date}</b> – ${entry.type}<br>
-            Skott: ${entry.shots.join(" – ")}<br>
-            Poäng: <b>${entry.score}</b>
-            <button class="log-del" onclick="del(${entry.id})">Ta bort</button>
+    logData.forEach(e => {
+        let d = document.createElement("div");
+        d.className = "log-card";
+        d.innerHTML = `
+            <b>${e.date}</b> – ${e.type}<br>
+            Skott: ${e.shots.join(" – ")}<br>
+            Poäng: <b>${e.score}</b>
+            <button class="log-del" onclick="del(${e.id})">Ta bort</button>
         `;
-        c.appendChild(div);
+        c.appendChild(d);
     });
 
     showPage("log");
@@ -265,15 +265,12 @@ function goHome(){
 
 function toggleExport(){
     let m = document.getElementById("exportMenu");
-    m.style.display = m.style.display === "none" ? "block" : "none";
+    m.style.display = (m.style.display === "none" ? "block" : "none");
 }
 
-function exportCSV(){
-    alert("CSV export kommer senare. (Filen fungerar, men denna är placeholder)");
-}
-
-function exportExcel(){ alert("Excel export kommer senare."); }
-function exportPDF(){ alert("PDF export kommer senare."); }
+function exportCSV(){ alert("CSV kommer snart."); }
+function exportExcel(){ alert("Excel kommer snart."); }
+function exportPDF(){ alert("PDF kommer snart."); }
 </script>
 
 </body>
