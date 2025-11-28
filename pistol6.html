@@ -14,14 +14,10 @@ body {
     text-align: center;
 }
 
-/* SIDOR */
 .page { display: none; max-width: 600px; margin: 0 auto; }
 .show { display: block !important; }
 
-/* RUBRIKER */
-h1, h2 { margin-bottom: 20px; }
-
-/* STARTMENY-KNAPPAR */
+/* STARTMENY KNAPPAR */
 .big-btn {
     width: 100%;
     padding: 22px;
@@ -117,23 +113,21 @@ h1, h2 { margin-bottom: 20px; }
 
 <body>
 
-<!-- STARTSKÄRM -->
+<!-- STARTSIDAN -->
 <div id="start" class="page show">
 <h1>Pistolskytte Logg</h1>
 
-<button class="big-btn prec-btn" onclick="startSeries('.22 B – Precision',5)">.22 B – Precision</button>
-<button class="big-btn prec-btn" onclick="startSeries('9mm B – Precision',5)">9mm B – Precision</button>
+<button class="big-btn prec-btn" onclick="startSeries('.22 – Precision',5)">.22 – Precision</button>
+<button class="big-btn prec-btn" onclick="startSeries('9mm – Precision',5)">9mm – Precision</button>
 
-<button class="big-btn snabb-btn" onclick="startSeries('.22 B – Snabbserie',6)">.22 B – Snabbserie</button>
-<button class="big-btn snabb-btn" onclick="startSeries('9mm B – Snabbserie',6)">9mm B – Snabbserie</button>
+<button class="big-btn snabb-btn" onclick="startSeries('.22 – Snabbserie',6)">.22 – Snabbserie</button>
+<button class="big-btn snabb-btn" onclick="startSeries('9mm – Snabbserie',6)">9mm – Snabbserie</button>
 
 <button class="big-btn log-btn" onclick="openLogbook()">📒 Loggbok</button>
 <button class="big-btn export-btn" onclick="toggleExport()">📤 Exportera</button>
 
 <div id="exportMenu" style="display:none;">
-    <button class="export-sub-btn" onclick="exportExcel()">📊 Excel</button>
-    <button class="export-sub-btn" onclick="exportPDF()">📄 PDF</button>
-    <button class="export-sub-btn" onclick="exportCSV()">📄 CSV</button>
+    <button class="export-sub-btn" onclick="exportCSV()">📄 Exportera som CSV</button>
 </div>
 </div>
 
@@ -158,10 +152,35 @@ h1, h2 { margin-bottom: 20px; }
     <button class="num-btn">0</button>
 </div>
 
+<!-- PLATSVAL -->
+<div style="margin-top:20px;">
+    <label style="font-size:18px;font-weight:bold;">Plats:</label>
+    <select id="plats" onchange="checkCustomPlats()" 
+            style="padding:10px;font-size:18px;border-radius:8px;margin-left:10px;">
+        <option value="Berget">Berget</option>
+        <option value="Grimsta">Grimsta</option>
+        <option value="Lövsta">Lövsta</option>
+        <option value="Annan">Annan…</option>
+    </select>
+</div>
+
+<div id="customPlatsDiv" style="display:none; margin-top:10px;">
+    <input id="customPlats" type="text" placeholder="Skriv plats..." 
+           style="padding:10px;font-size:18px;width:70%;border-radius:8px;">
+</div>
+
+<!-- MILJÖ -->
+<div style="margin-top:20px;">
+    <label style="font-size:18px;font-weight:bold;">Miljö:</label>
+    <select id="miljo" style="padding:10px;font-size:18px;border-radius:8px;margin-left:10px;">
+        <option value="Utomhus">Utomhus</option>
+        <option value="Inomhus">Inomhus</option>
+    </select>
+</div>
+
 <button class="small-btn undo" onclick="undo()">⟲ Ångra</button>
 <button class="small-btn clear" onclick="clearAll()">🗑 Rensa</button>
 <button class="small-btn save" onclick="saveSeries()">💾 Spara serie</button>
-
 <button class="small-btn back" onclick="goHome()">⬅ Tillbaka</button>
 </div>
 
@@ -214,20 +233,31 @@ function clearAll(){
     updateShots();
 }
 
+function checkCustomPlats() {
+    let plats = document.getElementById("plats").value;
+    document.getElementById("customPlatsDiv").style.display = 
+        (plats === "Annan") ? "block" : "none";
+}
+
 function saveSeries(){
     if(shots.length !== maxShots){
         alert("Du måste fylla i " + maxShots + " skott!");
         return;
     }
 
-    let score = shots.reduce((a,b) => a + (b==="X"?10:parseInt(b)), 0);
+    let plats = document.getElementById("plats").value;
+    if (plats === "Annan") {
+        plats = document.getElementById("customPlats").value || "Odefinierad plats";
+    }
 
     logData.push({
         id: Date.now(),
         date: new Date().toLocaleDateString(),
         type: currentType,
+        plats: plats,
+        miljo: document.getElementById("miljo").value,
         shots: [...shots],
-        score: score
+        score: shots.reduce((a,b)=>a + (b==="X"?10:parseInt(b)), 0)
     });
 
     localStorage.setItem("logData", JSON.stringify(logData));
@@ -239,15 +269,19 @@ function openLogbook(){
     c.innerHTML = "";
 
     logData.forEach(e => {
-        let d = document.createElement("div");
-        d.className = "log-card";
-        d.innerHTML = `
-            <b>${e.date}</b> – ${e.type}<br>
+        let div = document.createElement("div");
+        div.className = "log-card";
+        div.innerHTML = `
+            <b>${e.date}</b><br>
+            Kaliber: <b>${e.type.split(" – ")[0]}</b><br>
+            Gren: <b>${e.type.split(" – ")[1]}</b><br>
+            Plats: <b>${e.plats}</b><br>
+            Miljö: <b>${e.miljo}</b><br>
             Skott: ${e.shots.join(" – ")}<br>
             Poäng: <b>${e.score}</b>
             <button class="log-del" onclick="del(${e.id})">Ta bort</button>
         `;
-        c.appendChild(d);
+        c.appendChild(div);
     });
 
     showPage("log");
@@ -268,9 +302,31 @@ function toggleExport(){
     m.style.display = (m.style.display === "none" ? "block" : "none");
 }
 
-function exportCSV(){ alert("CSV kommer snart."); }
-function exportExcel(){ alert("Excel kommer snart."); }
-function exportPDF(){ alert("PDF kommer snart."); }
+function exportCSV() {
+    if (logData.length === 0) {
+        alert("Loggboken är tom!");
+        return;
+    }
+
+    let csv = "Datum;Kaliber;Gren;Plats;Miljö;Skott;Poäng\n";
+
+    logData.forEach(e => {
+        let kaliber = e.type.split(" – ")[0];
+        let gren = e.type.split(" – ")[1];
+
+        csv += `${e.date};${kaliber};${gren};${e.plats};${e.miljo};"${e.shots.join(" ")}";${e.score}\n`;
+    });
+
+    let blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    let url = URL.createObjectURL(blob);
+
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = "pistol_loggbok.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 </script>
 
 </body>
