@@ -6,7 +6,17 @@
 <meta name="theme-color" content="#1a73e8">
 
 <script>
+// FIX FÖR IPHONE – STOPPA 404 VID KNAPPTRYCK
+document.addEventListener("click", function (e) {
+  if (e.target.tagName === "BUTTON") {
+    e.preventDefault();
+  }
+}, true);
 
+// --- resten av ditt script kommer nedanför ---
+let log = [];
+let currentShots = [];
+let totalScore = 0;
 </script>
 
 <meta charset="UTF-8" />
