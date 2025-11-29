@@ -1,8 +1,8 @@
 {
-  "name": "PistolApp Beta",
+  "name": "PistolApp",
   "short_name": "PistolApp",
-  "start_url": "/beta/",
-  "scope": "/beta/",
+  "start_url": "/oscarpistol/",
+  "scope": "/oscarpistol/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e88e5",
