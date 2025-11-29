@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PistolApp – Serie registrering</title>
+
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#1a73e8">
+<link rel="apple-touch-icon" href="pistol-192.png">
 
 <script>
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("service-worker.js");
 }
 </script>
-
-<meta charset="UTF-8" />
-<title>PistolApp – Serie registrering</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon.png">
 
 <style>
   body {
@@ -72,63 +69,38 @@ if ("serviceWorker" in navigator) {
   .clear-btn { background:#c62828; color:#fff; }
 
   .save-btn {
-    width:100%; padding:20px; margin-top:10px; background:#1976d2;
-    color:#fff; font-size:1.3rem; border:none; border-radius:16px;
-    font-weight:700; cursor:pointer;
-  }
-
-  .nav-back {
-    width:100%; margin-top:14px; padding:16px;
-    font-size:1rem; border:none; border-radius:12px;
-    background:#ddd; cursor:pointer; font-weight:600;
+    width:100%; padding:20px; background:#1976d2;
+    color:#fff; border:none; border-radius:14px;
+    font-weight:700; font-size:1.2rem; margin-top:10px; cursor:pointer;
   }
 
   .log-card {
-    background:#fff; padding:12px 14px; border-radius:14px;
-    margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.12);
+    background:#fff; padding:16px; margin:12px 0;
+    border-radius:14px; box-shadow:0 2px 6px rgba(0,0,0,0.1);
   }
-  .log-top { font-weight:700; margin-bottom:4px; }
-  .log-sub { color:#555; font-size:0.9rem; }
-  .log-shots { margin-top:6px; font-weight:600; }
   .log-delete {
-    margin-top:6px; border:none; background:#c62828;
-    color:#fff; border-radius:999px; padding:6px 10px;
-    cursor:pointer; font-size:0.85rem;
+    width:100%; margin-top:10px; padding:12px;
+    background:#d32f2f; color:#fff; border:none; border-radius:10px;
+    font-weight:700; cursor:pointer;
   }
 </style>
 </head>
 
 <body>
 
-<!-- START -->
+<!-- STARTSIDA -->
 <div id="pageStart" class="page show">
   <h1>Pistolskytte Logg</h1>
 
-  <button class="quick-btn"
-    onclick="quickStart('Pistol','.22','Precision 25 m – 5 skott','Berget')">
-    .22 B – Precision
-  </button>
-
-  <button class="quick-btn"
-    onclick="quickStart('Pistol','9mm','Precision 25 m – 5 skott','Berget')">
-    9mm B – Precision
-  </button>
-
-  <button class="quick-btn green"
-    onclick="quickStart('Pistol','.22','Snabbserie 25 m – 6 skott','Berget')">
-    .22 B – Snabbserie
-  </button>
-
-  <button class="quick-btn green"
-    onclick="quickStart('Pistol','9mm','Snabbserie 25 m – 6 skott','Berget')">
-    9mm B – Snabbserie
-  </button>
+  <button class="quick-btn" onclick="startSeries('.22 B – Precision')">.22 B – Precision</button>
+  <button class="quick-btn" onclick="startSeries('9mm B – Precision')">9mm B – Precision</button>
+  <button class="quick-btn green" onclick="startSeries('.22 B – Snabbserie')">.22 B – Snabbserie</button>
+  <button class="quick-btn green" onclick="startSeries('9mm B – Snabbserie')">9mm B – Snabbserie</button>
 
   <button class="log-btn" onclick="openLogbook()">📒 Loggbok</button>
 </div>
 
-
-<!-- SERIE -->
+<!-- REGISTRERA SERIE -->
 <div id="pageSeries" class="page">
   <h2>Registrera serie</h2>
 
@@ -137,102 +109,69 @@ if ("serviceWorker" in navigator) {
 
   <label>Plats</label>
   <select id="placeField">
-    <option value="Berget">Berget</option>
-    <option value="Grimsta">Grimsta</option>
-    <option value="Annat">Annat</option>
+    <option>Berget</option>
+    <option>Grimsta</option>
+    <option>Lövsta</option>
+    <option>Annan plats</option>
   </select>
 
   <label>Vapen</label>
-  <select id="weaponField">
-    <option value="Pistol">Pistol</option>
-    <option value="Revolver">Revolver</option>
-  </select>
+  <input id="weaponField" placeholder="Beretta / CZ / Pardini / ...">
 
   <label>Kaliber</label>
   <select id="caliberField">
-    <option value=".22">.22</option>
-    <option value=".32">.32</option>
-    <option value="9mm">9mm</option>
-    <option value=".38 Special">.38 Special</option>
-    <option value=".357 Magnum">.357 Magnum</option>
+    <option>.22 LR</option>
+    <option>9mm</option>
+    <option>.38 Special</option>
+    <option>.357 Magnum</option>
   </select>
 
   <label>Typ</label>
-  <select id="typeField">
-    <option value="Precision 25 m – 5 skott">Precision 25 m – 5 skott</option>
-    <option value="Snabbserie 25 m – 6 skott">Snabbserie 25 m – 6 skott</option>
-  </select>
-
-  <label>Skott</label>
-  <div id="shotList"></div>
-
-  <label>Poäng</label>
-  <input id="scoreField" type="number" readonly>
-
-  <label>Antal skott</label>
-  <input id="shotsField" type="number" readonly>
+  <input id="typeField" readonly>
 
   <div class="shot-grid">
-    <button class="shot-btn">X</button>
     <button class="shot-btn">10</button>
     <button class="shot-btn">9</button>
     <button class="shot-btn">8</button>
     <button class="shot-btn">7</button>
     <button class="shot-btn">6</button>
-    <button class="shot-btn">5</button>
-    <button class="shot-btn">4</button>
-    <button class="shot-btn">3</button>
-    <button class="shot-btn">2</button>
-    <button class="shot-btn">1</button>
-    <button class="shot-btn">0</button>
+    <button class="shot-btn">X</button>
   </div>
 
   <div class="small-row">
-    <button class="small-btn undo-btn" onclick="undoShot()">⟲ Ångra</button>
-    <button class="small-btn clear-btn" onclick="clearShots()">🗑 Rensa</button>
+    <button class="small-btn undo-btn" onclick="undoShot()">Ångra</button>
+    <button class="small-btn clear-btn" onclick="clearShots()">Rensa</button>
   </div>
 
+  <label>Antal skott</label>
+  <input id="shotsField" readonly>
+
+  <label>Poäng</label>
+  <input id="scoreField" readonly>
+
   <button class="save-btn" onclick="saveSeries()">Spara serie</button>
-  <button class="nav-back" onclick="goHome()">⬅ Tillbaka</button>
+  <button class="small-btn" onclick="goHome()" style="margin-top:20px;background:#555;color:#fff;">Tillbaka</button>
 </div>
 
-
-<!-- LOGGBOK -->
+<!-- LOGGBOKEN -->
 <div id="pageLogbook" class="page">
   <h2>Loggbok</h2>
+
   <div id="logContainer"></div>
-  <button class="save-btn" onclick="exportCSV()">📤 Exportera till Excel</button>
-  <button class="nav-back" onclick="goHome()">⬅ Tillbaka</button>
+
+  <button class="save-btn" onclick="exportCSV()">Exportera CSV</button>
+  <button class="small-btn" onclick="goHome()" style="margin-top:20px;background:#555;color:#fff;">Tillbaka</button>
 </div>
 
 
 <script>
 let log = [];
+const KEY = "PISTOL_LOG";
+
 let currentShots = [];
 let totalScore = 0;
-const KEY = "pistolapp_log_v1";
 
-
-/* --- NY korrekt snabbstart utan URL-byten --- */
-function quickStart(weapon, caliber, type, place) {
-
-  document.getElementById("weaponField").value = weapon;
-  document.getElementById("caliberField").value = caliber;
-  document.getElementById("typeField").value = type;
-  document.getElementById("placeField").value = place;
-  document.getElementById("dateField").valueAsDate = new Date();
-
-  currentShots = [];
-  totalScore = 0;
-  updateDisplay();
-
-  showPage("pageSeries");
-}
-
-
-/* --- När sidan laddas --- */
 document.addEventListener("DOMContentLoaded", () => {
-
   let saved = localStorage.getItem(KEY);
   if (saved) log = JSON.parse(saved);
 
@@ -248,21 +187,29 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+function startSeries(type) {
+  document.getElementById("typeField").value = type;
+  currentShots = [];
+  totalScore = 0;
+  updateDisplay();
+  showPage("pageSeries");
+}
 
-function showPage(id){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("show"));
   document.getElementById(id).classList.add("show");
 }
 
-function goHome(){ showPage("pageStart"); }
+function goHome() {
+  showPage("pageStart");
+}
 
-function getMaxShots(){
+function getMaxShots() {
   let t = document.getElementById("typeField").value;
   return t.includes("Precision") ? 5 : 6;
 }
 
-function updateDisplay(){
-  document.getElementById("shotList").textContent = currentShots.join(" – ");
+function updateDisplay() {
   document.getElementById("shotsField").value = currentShots.length;
   document.getElementById("scoreField").value = totalScore;
 }
@@ -288,11 +235,11 @@ function saveSeries(){
 
   let entry = {
     id: Date.now(),
-    date: document.getElementById("dateField").value,
-    place: document.getElementById("placeField").value,
-    weapon: document.getElementById("weaponField").value,
-    caliber: document.getElementById("caliberField").value,
-    type: document.getElementById("typeField").value,
+    date: dateField.value,
+    place: placeField.value,
+    weapon: weaponField.value,
+    caliber: caliberField.value,
+    type: typeField.value,
     shots: [...currentShots],
     score: totalScore
   };
@@ -323,9 +270,9 @@ function renderLog(){
     let div=document.createElement("div");
     div.className="log-card";
     div.innerHTML=`
-      <div class="log-top">${e.date} – ${e.type}</div>
-      <div class="log-sub">Vapen: ${e.weapon} | Kaliber: ${e.caliber} | Plats: ${e.place}</div>
-      <div class="log-shots">Skott: ${e.shots.join(" – ")}</div>
+      <div><strong>${e.date}</strong> – ${e.type}</div>
+      <div>Vapen: ${e.weapon} | Kaliber: ${e.caliber} | Plats: ${e.place}</div>
+      <div>Skott: ${e.shots.join(" – ")}</div>
       <button class="log-delete" onclick="deleteEntry(${e.id})">Ta bort</button>
     `;
     box.appendChild(div);
@@ -354,10 +301,7 @@ function exportCSV(){
   a.href=url; a.download="pistolskytte_loggbok.csv"; a.click();
   URL.revokeObjectURL(url);
 }
-
 </script>
-
-
 
 </body>
 </html>
