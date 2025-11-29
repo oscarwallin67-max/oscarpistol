@@ -1,10 +1,13 @@
-const CACHE_NAME = "pistolapp-v1";
+const CACHE_NAME = "pistolapp-beta-v1";
 const FILES_TO_CACHE = [
   "./",
   "./index.html",
-  "./style.css",
-  "./script.js",
-  "./icon.png"
+  "./manifest.json",
+  "./pistol-16.png",
+  "./pistol-32.png",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./favicon.ico"
 ];
 
 self.addEventListener("install", (event) => {
