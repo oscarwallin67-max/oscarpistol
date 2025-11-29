@@ -1,8 +1,8 @@
 {
   "name": "PistolApp",
   "short_name": "PistolApp",
-  "start_url": "/oscarwallin67-max/oscarpistol/pistol6.html",
-  "scope": "/oscarwallin67-max/oscarpistol/",
+  "start_url": "/oscarpistol/index.html",
+  "scope": "/oscarpistol/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
